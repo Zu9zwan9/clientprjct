@@ -67,6 +67,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/bcrypt": "^5.0.2",
     "@types/zxcvbn": "^4.4.4"
   }
