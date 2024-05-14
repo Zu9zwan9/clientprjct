@@ -17,8 +17,6 @@ import {InputAdornment} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {setActiveUser} from "../../../store/slice/user/UserSlice";
-import { signInWithPopup } from 'firebase/auth';
-import { auth, googleProvider } from './firebase-config'; // Adjust the import path as necessary
 
 const SignInForm: React.FC<{}> = () => {
     const [showPass, setShowPass] = useState(false);
@@ -48,17 +46,17 @@ const SignInForm: React.FC<{}> = () => {
     };
 
 
-    const handleGoogleSignIn = async () => {
-        try {
-            const result = await signInWithPopup(auth, googleProvider);
-            // You can handle or store the user info here
-            console.log(result.user); // Log or handle user information as needed
-            navigate("/profile");
-        } catch (error) {
-            console.error(error);
-            setErrorMsg("Failed to authenticate with Google");
-        }
-    };
+    // const handleGoogleSignIn = async () => {
+    //     try {
+    //         const result = await signInWithPopup(auth, googleProvider);
+    //         // You can handle or store the user info here
+    //         console.log(result.user); // Log or handle user information as needed
+    //         navigate("/profile");
+    //     } catch (error) {
+    //         console.error(error);
+    //         setErrorMsg("Failed to authenticate with Google");
+    //     }
+    // };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
