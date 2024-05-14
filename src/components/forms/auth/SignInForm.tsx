@@ -17,37 +17,48 @@ import {InputAdornment} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {setActiveUser} from "../../../store/slice/user/UserSlice";
+import { signInWithPopup } from 'firebase/auth';
+import { auth, googleProvider } from './firebase-config'; // Adjust the import path as necessary
 
 const SignInForm: React.FC<{}> = () => {
     const [showPass, setShowPass] = useState(false);
-
-    const handleClickShowPass = () => setShowPass(!showPass);
-
-    const handleMouseDownPass  = (event: { preventDefault: () => any; }) => event.preventDefault();
-
-    const {register, handleSubmit, formState: {errors}} = useForm<User>();
-
+    const { register, handleSubmit, formState: { errors } } = useForm<User>();
     const [errorMsg, setErrorMsg] = useState<string>();
-
-    let dispatch = useAppDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
+    const handleClickShowPass = () => {
+        setShowPass(!showPass);
+    };
 
-    function onSubmit(data: User) {
+    const handleMouseDownPass = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault(); // This function now matches the purpose, preventing focus loss
+    };
+
+    const onSubmit = async (data: User) => {
         setErrorMsg("");
-        dispatch(loginUser(data))
-            .then(unwrapResult)
-            .then((result) => {
-                localStorage.setItem('user', JSON.stringify(result));
-                dispatch(setActiveUser(result));
-                //console.log("result",result)
+        try {
+            const result = await dispatch(loginUser(data)).then(unwrapResult);
+            localStorage.setItem('user', JSON.stringify(result));
+            dispatch(setActiveUser(result));
+            navigate("/");
+        } catch (error: any) {
+            setErrorMsg(error.message || "An unknown error occurred");
+        }
+    };
 
-                navigate("/");
-            }).catch(error => {
-            setErrorMsg(error);
 
-        });
-    }
+    const handleGoogleSignIn = async () => {
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            // You can handle or store the user info here
+            console.log(result.user); // Log or handle user information as needed
+            navigate("/profile");
+        } catch (error) {
+            console.error(error);
+            setErrorMsg("Failed to authenticate with Google");
+        }
+    };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
@@ -61,12 +72,10 @@ const SignInForm: React.FC<{}> = () => {
                         id="input-email"
                         aria-describedby="component-error-text"
                     />
-                    {errors.email && <FormHelperText id="input-email">{errors.email?.message}</FormHelperText>}
+                    {errors.email && <FormHelperText id="input-email-text">{errors.email.message}</FormHelperText>}
                 </FormControl>
                 <FormControl fullWidth error={!!errors.password} variant="standard">
-                    <InputLabel htmlFor="component-error">
-                        Пароль:
-                    </InputLabel>
+                    <InputLabel htmlFor="component-error">Пароль:</InputLabel>
                     <Input
                         {...register('password', {
                             required: "This is required.",
@@ -80,7 +89,7 @@ const SignInForm: React.FC<{}> = () => {
                             },
                         })}
                         id="component-error"
-                        type="password"
+                        type={showPass ? 'text' : 'password'}
                         aria-describedby="component-error-text"
                         endAdornment={
                             <InputAdornment position="end">
@@ -94,24 +103,24 @@ const SignInForm: React.FC<{}> = () => {
                             </InputAdornment>
                         }
                     />
-                    {errors.password &&
-                        <FormHelperText id="password-error-text">{errors.password?.message}</FormHelperText>}
+                    {errors.password && <FormHelperText id="password-error-text">{errors.password.message}</FormHelperText>}
                 </FormControl>
-                {errorMsg && errorMsg.length &&
+                {errorMsg && (
                     <FormControl fullWidth>
-                        <Alert icon={<CheckIcon fontSize="inherit"/>} severity="error">
+                        <Alert icon={<CheckIcon fontSize="inherit" />} severity="error">
                             {errorMsg}
                         </Alert>
                     </FormControl>
-                }
-                <FormControl style={{maxWidth: 200}} variant="standard">
+                )}
+                <FormControl style={{ maxWidth: 200 }} variant="standard">
                     <Button type="submit" variant="outlined">Увійти</Button>
                 </FormControl>
+                {/*<Button onClick={handleGoogleSignIn} variant="contained" color="primary">*/}
+                {/*    Sign in with Google*/}
+                {/*</Button>*/}
             </Stack>
-
-
         </form>
-    )
-}
+    );
+};
 
 export default SignInForm;

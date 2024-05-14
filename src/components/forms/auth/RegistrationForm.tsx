@@ -86,21 +86,18 @@ const RegistrationForm: React.FC = () => {
                     <InputLabel htmlFor="confirm-password-input">Підтвердіть пароль</InputLabel>
                     <Input
                         id="confirm-password-input"
-                        type="password"
+                        type={showConfirmPassword ? 'text' : 'password'}
                         {...register('confirmPassword', {
                             validate: value => value === watch('password') || "Паролі не співпадають"
                         })}
                         endAdornment={
                             <InputAdornment position="end">
                                 <IconButton
-                                    aria-label="toggle confirmPassword visibility"
-                                    onClick={handleClickShowConfirmPassword}
-                                    onMouseDown={handleMouseDownConfirmPassword}
+                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                    onMouseDown={(event) => event.preventDefault()}
                                 >
-                                    {showPassword ? <VisibilityOff/> : <Visibility/>}
+                                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                                 </IconButton>
-
-                                {watch('password') === watch('confirmPassword') && <CheckIcon color="success"/>}
                             </InputAdornment>
                         }
 
@@ -116,4 +113,3 @@ const RegistrationForm: React.FC = () => {
 };
 
 export default RegistrationForm;
-
