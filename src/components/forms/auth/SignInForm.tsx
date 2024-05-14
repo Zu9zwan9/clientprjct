@@ -21,7 +21,7 @@ import {setActiveUser} from "../../../store/slice/user/UserSlice";
 const SignInForm: React.FC<{}> = () => {
     const [showPassword, setShowPassword] = React.useState(false);
 
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleClickShowPassword = () => setShowPassword((show) => !showPassword);
 
     const handleMouseDownPassword = (result: { preventDefault: () => void; }) => {
         result.preventDefault();
