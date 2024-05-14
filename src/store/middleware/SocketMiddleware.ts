@@ -3,7 +3,7 @@ import { useAppSelector } from "hooks/app";
 import {Auction} from "models/Auction";
 import {io, Socket} from "socket.io-client";
 import {closeActiveAuction, receiveAuctionRate, sendAuctionRate} from "store/slice/auction/AuctionSlice";
-import { reciveComment } from "store/slice/comment/CommentSlice";
+import { receiveComment } from "store/slice/comment/CommentSlice";
 import { createComment } from "store/slice/comment/actions/createComment";
 import {wsConnect, wsDisconnect, wsInit} from "store/slice/socket/SocketSlice";
 import { setActiveUser } from "store/slice/user/UserSlice";
@@ -56,7 +56,7 @@ const socketMiddleware: Middleware = store => next => action => {
 
         socket.on("comment", (data) => {
             console.log("comment", data);
-            store.dispatch(reciveComment(data));
+            store.dispatch(receiveComment(data));
         });
 
         console.log('init web socket');

@@ -15,7 +15,7 @@ const commentSlice = createSlice({
             state.commentList = action.payload
         },
 
-        reciveComment(state, action) {
+        receiveComment(state, action) {
             state.commentList.unshift(action.payload);
         }
     },
@@ -30,6 +30,6 @@ const commentSlice = createSlice({
 
 });
 
-export const {setCommentList, reciveComment} = commentSlice.actions;
+export const {setCommentList, receiveComment} = commentSlice.actions;
 
 export default commentSlice.reducer;
