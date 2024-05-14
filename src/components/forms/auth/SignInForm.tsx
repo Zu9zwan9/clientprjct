@@ -19,11 +19,11 @@ import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {setActiveUser} from "../../../store/slice/user/UserSlice";
 
 const SignInForm: React.FC<{}> = () => {
-    const [showPassword, setShowPassword] = React.useState(false);
+    const [showPass, setShowPass] = useState(false);
 
-    const handleClickShowPass = () => setShowPassword(!showPassword);
+    const handleClickShowPass = () => setShowPass(!showPass);
 
-    const handleMouseDownPassword  = (event: { preventDefault: () => any; }) => event.preventDefault();
+    const handleMouseDownPass  = (event: { preventDefault: () => any; }) => event.preventDefault();
 
     const {register, handleSubmit, formState: {errors}} = useForm<User>();
 
@@ -87,9 +87,9 @@ const SignInForm: React.FC<{}> = () => {
                                 <IconButton
                                     aria-label="toggle password visibility"
                                     onClick={handleClickShowPass}
-                                    onMouseDown={handleMouseDownPassword}
+                                    onMouseDown={handleMouseDownPass}
                                 >
-                                    {showPassword ? <VisibilityOff/> : <Visibility/>}
+                                    {showPass ? <VisibilityOff/> : <Visibility/>}
                                 </IconButton>
                             </InputAdornment>
                         }
