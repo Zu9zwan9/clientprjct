@@ -21,11 +21,10 @@ import {setActiveUser} from "../../../store/slice/user/UserSlice";
 const SignInForm: React.FC<{}> = () => {
     const [showPassword, setShowPassword] = React.useState(false);
 
-    const handleClickShowPassword = () => setShowPassword((show) => !showPassword);
+    const handleClickShowPass = () => setShowPassword(!showPassword);
 
-    const handleMouseDownPassword = (result: { preventDefault: () => void; }) => {
-        result.preventDefault();
-    };
+    const handleMouseDownPassword  = (event: { preventDefault: () => any; }) => event.preventDefault();
+
     const {register, handleSubmit, formState: {errors}} = useForm<User>();
 
     const [errorMsg, setErrorMsg] = useState<string>();
@@ -53,7 +52,7 @@ const SignInForm: React.FC<{}> = () => {
     return (
         <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
             <Stack alignItems="flex-end" spacing={2}>
-                <FormControl fullWidth error={errors.email ? true : false} variant="standard">
+                <FormControl fullWidth error={!!errors.email} variant="standard">
                     <InputLabel htmlFor="input-email">Email:</InputLabel>
                     <Input
                         {...register('email', {
@@ -64,7 +63,7 @@ const SignInForm: React.FC<{}> = () => {
                     />
                     {errors.email && <FormHelperText id="input-email">{errors.email?.message}</FormHelperText>}
                 </FormControl>
-                <FormControl fullWidth error={errors.password ? true : false} variant="standard">
+                <FormControl fullWidth error={!!errors.password} variant="standard">
                     <InputLabel htmlFor="component-error">
                         Пароль:
                     </InputLabel>
@@ -87,7 +86,7 @@ const SignInForm: React.FC<{}> = () => {
                             <InputAdornment position="end">
                                 <IconButton
                                     aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
+                                    onClick={handleClickShowPass}
                                     onMouseDown={handleMouseDownPassword}
                                 >
                                     {showPassword ? <VisibilityOff/> : <Visibility/>}
