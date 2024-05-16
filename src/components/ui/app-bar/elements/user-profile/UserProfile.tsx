@@ -49,7 +49,7 @@ const UserProfile: React.FC<{}> = () => {
                 // aria-haspopup="true"
                 onClick={handleMenu}
                 color="inherit"
-            > <Avatar alt="Remy Sharp" src={`${BASE_URL}/files/${activeUser?.thumbnail}`} />
+            > <Avatar alt="Remy Sharp" src={`${activeUser?.thumbnail}`} />
 
             </IconButton>
             <Menu
