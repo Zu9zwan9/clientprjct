@@ -97,8 +97,8 @@ const DashboardAuctionPage: React.FC<{}> = () => {
                                             </TableCell>
                                             <TableCell>
                                                 {row.thumbnail &&
-                                                    <img style={{height: 100}}
-                                                         src={`${BASE_URL}/files/${row.thumbnail}`}/>
+                                                    <img style={{height: 480}}
+                                                         src={row.thumbnail}/>
                                                 }
                                             </TableCell>
                                             <TableCell>{row.name}</TableCell>
