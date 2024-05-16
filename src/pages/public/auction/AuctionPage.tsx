@@ -145,7 +145,7 @@ const AuctionPage: React.FC<{}> = () => {
                                     <CardMedia
                                         component="img"
                                         sx={{maxWidth: 480}}
-                                        image={`${BASE_URL}/files/${activeAuction.thumbnail}`}
+                                        image={`${activeAuction.thumbnail}`}
                                         alt="imgauction"
                                     />
                                     <Box width="100%">

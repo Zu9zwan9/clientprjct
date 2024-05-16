@@ -73,7 +73,7 @@ const AuctionPublicTable: React.FC<AuctionPublicTableProps> = (props) => {
 
                             <TableCell>
                                 {row.thumbnail &&
-                                    <img style={{height: 100}} src={`${BASE_URL}/files/${row.thumbnail}`}/>
+                                    <img style={{height: 100}} src={`${row.thumbnail}`}/>
                                 }
                             </TableCell>
                             <TableCell>{row.name}</TableCell>

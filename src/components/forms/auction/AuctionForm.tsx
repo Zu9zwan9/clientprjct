@@ -116,7 +116,7 @@ dispatch(data._id ? editCategory(data) : createCategory(data))
             if (brand) setModelList(brand.modelList);
 
             setValueDatePicker(moment.unix(props.object.dateClose));
-            setThumbnail(`${BASE_URL}/files/${props.object.thumbnail}`);
+            setThumbnail(`${props.object.thumbnail}`);
 
         }
     }, [props.object])
