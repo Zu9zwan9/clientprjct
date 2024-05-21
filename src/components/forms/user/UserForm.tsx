@@ -35,7 +35,6 @@ const UserForm: React.FC<FormObjectProps<User>> = (props) => {
         getValues
     } = useForm<User>({
 
-        //resolver: useYupValidationResolver(CustomDomainSchema),
         mode: 'all',
         shouldUnregister: false,
     });
@@ -70,19 +69,6 @@ const UserForm: React.FC<FormObjectProps<User>> = (props) => {
             }).catch(error => {
             console.log(error)
         });
-        /*
-        dispatch(data._id ? editCategory(data) : createCategory(data))
-            .then(unwrapResult)
-            .then((result) => {
-                setNotification("Запит успішно виконаний");
-                //reset();
-                //console.log("result",result)
-                //navigate("/");
-            }).catch(error => {
-                setErrorMsg(error);
-               
-            });
-        */
     }
 
     useEffect(() => {
@@ -181,7 +167,7 @@ const UserForm: React.FC<FormObjectProps<User>> = (props) => {
                                 value={field.value ? field.value : ""}
                                 variant="filled"
                                 fullWidth
-                                label="Емейл"
+                                label="Електронна адреса"
                             />
                         )}
                     />

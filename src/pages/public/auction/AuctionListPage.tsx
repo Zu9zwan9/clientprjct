@@ -17,7 +17,7 @@ const AuctionListPage: React.FC<{}> = () => {
     const sortList = [
         {value: "new", label: "Найновіші"},
         {value: "popular", label: "Популярні"},
-        {value: "comercial", label: "Комерційні"},
+        {value: "commercial", label: "Комерційні"},
     ]
 
     const {carTypeList, brandList} = useAppSelector(state => state.auction);

@@ -31,21 +31,14 @@ const DashboardUserPage: React.FC<{}> = () => {
     const navigate = useNavigate();
     let dispatch = useAppDispatch();
 
-    //const service-factory = container.resolve(ServiceFactory);
 
     const handleDelete = (user: User) => {
-        /*
-        dispatch(deleteUser(user))
-            .then(() => {
-                setNotification("команда успішно виконана")
-        })
-        */
 
         ServiceFactory
             .getUserService()
             .remove(user)
             .then(result => {
-                setNotification("Запит успішно вконаний");
+                setNotification("Запит успішно виконаний");
                 fetchUserList();
             }).catch(error => {
             console.log(error);
@@ -85,7 +78,7 @@ const DashboardUserPage: React.FC<{}> = () => {
                                     <TableRow>
                                         <TableCell style={{width: "200px"}}>ID</TableCell>
                                         <TableCell>І'мя</TableCell>
-                                        <TableCell>Емейл</TableCell>
+                                        <TableCell>Електронна адреса</TableCell>
                                         <TableCell>Роль</TableCell>
                                         <TableCell style={{width: "200px"}}></TableCell>
                                     </TableRow>

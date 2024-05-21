@@ -77,20 +77,6 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
 
         });
 
-        /*
-setErrorMsg("");
-dispatch(data._id ? editCategory(data) : createCategory(data))
-    .then(unwrapResult)
-    .then((result) => {
-        setNotification("Запит успішно виконаний");
-        //reset();
-        //console.log("result",result)
-        //navigate("/");
-    }).catch(error => {
-        setErrorMsg(error);
-
-    });
-*/
     }
 
     const handleThumbnailChange = async (newValue: any) => {
