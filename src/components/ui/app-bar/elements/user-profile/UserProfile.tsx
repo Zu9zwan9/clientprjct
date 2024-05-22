@@ -11,7 +11,6 @@ import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "hooks/app";
 import {setActiveUser} from "store/slice/user/UserSlice";
 import {Avatar} from "@mui/material";
-import { BASE_URL } from "store/config";
 
 
 const UserProfile: React.FC<{}> = () => {
@@ -23,7 +22,6 @@ const UserProfile: React.FC<{}> = () => {
     const navigate = useNavigate();
 
     const dispatch = useAppDispatch();
-
 
     const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -43,14 +41,10 @@ const UserProfile: React.FC<{}> = () => {
     return (
         <div>
             <IconButton
-                // size="large"
-                // aria-label="account of current user"
-                // aria-controls="menu-appbar"
-                // aria-haspopup="true"
                 onClick={handleMenu}
                 color="inherit"
-            > <Avatar alt="Remy Sharp" src={`${activeUser?.thumbnail}`} />
-
+            >
+                <Avatar alt={activeUser?.name || 'User'} src={`${activeUser?.thumbnail_file}`} />
             </IconButton>
             <Menu
                 id="menu-appbar"

@@ -39,7 +39,7 @@ const RegistrationForm: React.FC = () => {
             await dispatch(registerUser(data)).then(unwrapResult);
             navigate("/profile");
         } catch (error: any) {
-            setErrorMsg(error.message || "An unknown error occurred");
+            setErrorMsg(error.message || "Помилка реєстрації");
         }
     };
 

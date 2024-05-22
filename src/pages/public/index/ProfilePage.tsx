@@ -49,9 +49,7 @@ const ProfilePage: React.FC<{}> = () => {
                             <Stack spacing={4}>
                                 <Card variant="outlined">
                                     <CardContent>
-
                                         <Stack spacing={4}>
-
                                             <UserForm object={activeUser}/>
                                         </Stack>
                                     </CardContent>

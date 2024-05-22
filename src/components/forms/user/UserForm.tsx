@@ -21,6 +21,7 @@ import {setActiveUser} from "store/slice/user/UserSlice";
 import { Grid } from "@mui/material";
 import { MuiFileInput } from "mui-file-input";
 import getBase64Image from "hooks/useBase64Image";
+import Input from "@mui/material/Input";
 
 
 const UserForm: React.FC<FormObjectProps<User>> = (props) => {
@@ -112,24 +113,10 @@ const UserForm: React.FC<FormObjectProps<User>> = (props) => {
 
                                     onChange={handleThumbnailChange}
                                 />
-                                {/*<Input
-                                        onChange={async (e) => {
-                                            if (e.target.files) {
-                                                setValue("thumbnail_file", e.target.files[0]);
-                                                const base64 = await getBase64Image(e.target.files[0]);
-                                                setThumbnail(base64);
-                                            }
-                                        }}
-                                        type="file"
-                                        className="form-control form-file-input"
-                                        
-                                    />
-                        */}
                             </FormControl>
 
                         </Grid>
                         <Grid item xs={6}>
-                            {thumbnail && <img src={thumbnail} style={{height: 150}} className=""/>}
                         </Grid>
                     </Grid>
                 </FormControl>

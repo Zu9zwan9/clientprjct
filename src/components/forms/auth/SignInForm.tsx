@@ -41,7 +41,7 @@ const SignInForm: React.FC<{}> = () => {
             dispatch(setActiveUser(result));
             navigate("/");
         } catch (error: any) {
-            setErrorMsg(error.message || "An unknown error occurred");
+            setErrorMsg(error.message || "Помилка авторизації");
         }
     };
 

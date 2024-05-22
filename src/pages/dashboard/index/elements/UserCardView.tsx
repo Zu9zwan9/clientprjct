@@ -10,10 +10,10 @@ import Typography from '@mui/material/Typography';
 const UserCardView: React.FC<{}> = () => {
 
     return (
-        <Card sx={{maxWidth: 335}}>
+        <Card sx={{maxWidth: 345}}>
             <CardContent>
                 <CardMedia
-                    sx={{height: 160}}
+                    sx={{height: 140}}
                     image="/image/user.png"
                     title="users list"
                 />

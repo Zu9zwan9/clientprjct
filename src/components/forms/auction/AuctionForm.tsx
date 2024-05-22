@@ -77,20 +77,6 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
 
         });
 
-        /*
-setErrorMsg("");
-dispatch(data._id ? editCategory(data) : createCarBrandModel(data))
-    .then(unwrapResult)
-    .then((result) => {
-        setNotification("Запит успішно виконаний");
-        //reset();
-        //console.log("result",result)
-        //navigate("/");
-    }).catch(error => {
-        setErrorMsg(error);
-
-    });
-*/
     }
 
     const handleThumbnailChange = async (newValue: any) => {
@@ -130,7 +116,7 @@ dispatch(data._id ? editCategory(data) : createCarBrandModel(data))
     return (
         <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
             <Stack alignItems="flex-start" spacing={2}>
-                <FormControl fullWidth error={errors.name ? true : false} variant="standard">
+                <FormControl fullWidth error={!!errors.name} variant="standard">
                     <Controller
                         name="name"
                         control={control}
@@ -327,19 +313,6 @@ dispatch(data._id ? editCategory(data) : createCarBrandModel(data))
 
                                 onChange={handleThumbnailChange}
                             />
-                            {/*<Input
-                                    onChange={async (e) => {
-                                        if (e.target.files) {
-                                            setValue("thumbnail_file", e.target.files[0]);
-                                            const base64 = await getBase64Image(e.target.files[0]);
-                                            setThumbnail(base64);
-                                        }
-                                    }}
-                                    type="file"
-                                    className="form-control form-file-input"
-                                    
-                                />
-                    */}
                         </FormControl>
 
                     </Grid>

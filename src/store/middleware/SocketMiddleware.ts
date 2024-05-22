@@ -1,37 +1,26 @@
-import {isAsyncThunkAction, Middleware} from "@reduxjs/toolkit";
-import { useAppSelector } from "hooks/app";
-import {Auction} from "models/Auction";
-import {io, Socket} from "socket.io-client";
-import {closeActiveAuction, receiveAuctionRate, sendAuctionRate} from "store/slice/auction/AuctionSlice";
+import { isAsyncThunkAction, Middleware } from "@reduxjs/toolkit";
+import { Auction } from "models/Auction";
+import { io, Socket } from "socket.io-client";
+import { closeActiveAuction, receiveAuctionRate, sendAuctionRate } from "store/slice/auction/AuctionSlice";
 import { receiveComment } from "store/slice/comment/CommentSlice";
-import { createComment } from "store/slice/comment/actions/createComment";
-import {wsConnect, wsDisconnect, wsInit} from "store/slice/socket/SocketSlice";
+import { wsConnect, wsDisconnect, wsInit } from "store/slice/socket/SocketSlice";
 import { setActiveUser } from "store/slice/user/UserSlice";
+import { BASE_URL } from '../config';
 
 let socket: Socket;
 
 const socketMiddleware: Middleware = store => next => action => {
-
     const response = next(action);
 
-    console.log(action);
-
     if (wsInit.match(action)) {
-
-        socket = io('https://finalprj-api.onrender.com', {transports: ["websocket"]});
+        socket = io(`${BASE_URL}`, { transports: ["websocket"] });
 
         socket.on("connect", () => {
-            console.log('web socket connect');
             store.dispatch(wsConnect());
-
-            const state =  store.getState();
-
-            console.log(state.activeUser )
+            const state = store.getState();
             if (state.user.activeUser) {
                 socket.emit("join_room", [state.user.activeUser._id]);
             }
-            
-           
         });
 
         socket.on("disconnect", () => {
