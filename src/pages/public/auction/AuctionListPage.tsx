@@ -197,9 +197,9 @@ const AuctionListPage: React.FC<{}> = () => {
                     <Grid container spacing={2}>
                         {auctionList.map((row) => (
                             <Grid item xs={12} key={row._id}>
-                                <Card>
+                                <Card sx={{ ml: 2 }}>
                                     {row.thumbnail && (
-                                        <img style={{ height: 200, width: '100%', objectFit: 'cover' }} src={`${row.thumbnail}`} />
+                                        <img style={{ height: "auto", width: '100%', objectFit: 'cover' }} src={`${row.thumbnail}`} />
                                     )}
                                     <CardContent>
                                         <Typography variant="h5" component="div">

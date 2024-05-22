@@ -156,7 +156,7 @@ const AuctionPage: React.FC<{}> = () => {
                                                 <Button
                                                     onClick={handleButtonSendClick}
                                                     disabled={activeUser ? false : true}
-                                                    sx={{ width: 150 }}
+                                                    sx={{ width: 200 }}
                                                     variant="contained"
                                                     endIcon={<SendIcon />}
                                                 >
@@ -179,7 +179,7 @@ const AuctionPage: React.FC<{}> = () => {
                 <Grid item xs={12}>
                     <Stack spacing={2}>
                         {commentList.map(item => (
-                            <Box key={item._id}>{item.userName} {item.comment}</Box>
+                            <Box key={item._id}>{item.userName}: {item.comment}</Box>
                         ))}
                         {activeUser &&
                             <CommentForm auctionId={activeAuction._id} onCreate={handleOnCommentCreate} />
