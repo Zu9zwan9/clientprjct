@@ -1,5 +1,5 @@
 // src/store/config.ts
-const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:4000';
+const apiUrl = process.env.REACT_APP_API_URL;
 
 if (!apiUrl) {
     console.error("API URL is not defined. Please check your .env file.");
