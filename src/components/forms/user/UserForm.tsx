@@ -102,29 +102,29 @@ const UserForm: React.FC<FormObjectProps<User>> = (props) => {
                     )}
                 />
 
-                {activeUser?.role == Role.ROOT  
-                    ?<FormControl>
-                    <Grid container>
-                        <Grid item xs={6}>
-                            <FormControl fullWidth variant="standard">
-                                <MuiFileInput
-                                    value={thumbnail}
-                                    label="Оберіть файл для обкладинки"
+                {/*{activeUser?.role == Role.ROOT  */}
+                {/*    ?<FormControl>*/}
+                {/*    <Grid container>*/}
+                {/*        <Grid item xs={6}>*/}
+                {/*            <FormControl fullWidth variant="standard">*/}
+                {/*                <MuiFileInput*/}
+                {/*                    value={thumbnail}*/}
+                {/*                    label="Оберіть файл для обкладинки"*/}
 
-                                    onChange={handleThumbnailChange}
-                                />
-                            </FormControl>
+                {/*                    onChange={handleThumbnailChange}*/}
+                {/*                />*/}
+                {/*            </FormControl>*/}
 
-                        </Grid>
-                        <Grid item xs={6}>
-                        </Grid>
-                    </Grid>
-                </FormControl>
+                {/*        </Grid>*/}
+                {/*        <Grid item xs={6}>*/}
+                {/*        </Grid>*/}
+                {/*    </Grid>*/}
+                {/*</FormControl>*/}
+*/}
 
-                    : ""
-                
-                }
-               
+                {/*    : ""*/}
+
+                {/*}
                  
               
 
