@@ -120,13 +120,13 @@ const UserForm: React.FC<FormObjectProps<User>> = (props) => {
                 {/*        </Grid>*/}
                 {/*    </Grid>*/}
                 {/*</FormControl>*/}
-*/}
 
                 {/*    : ""*/}
 
-                {/*}
-                 
-              
+                {/*}*/}
+
+                {/* */}
+
 
                 <FormControl fullWidth error={errors.name ? true : false} variant="standard">
                     <Controller
