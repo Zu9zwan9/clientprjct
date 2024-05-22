@@ -18,7 +18,7 @@ function CarBrandModelForm() {
                     <Controller
                         name="brand"
                         control={control}
-                        rules={{ required: 'This field is required' }}
+                        rules={{ required: "Обов'язкове поле" }}
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -35,7 +35,7 @@ function CarBrandModelForm() {
                     <Controller
                         name="model"
                         control={control}
-                        rules={{ required: 'This field is required' }}
+                        rules={{ required: "Обов'язкове поле" }}
                         render={({ field }) => (
                             <TextField
                                 {...field}

@@ -65,7 +65,7 @@ const SignInForm: React.FC<{}> = () => {
                     <InputLabel htmlFor="input-email">Email:</InputLabel>
                     <Input
                         {...register('email', {
-                            required: "Required",
+                            required: "Обов'язкове поле",
                         })}
                         id="input-email"
                         aria-describedby="component-error-text"
@@ -76,7 +76,7 @@ const SignInForm: React.FC<{}> = () => {
                     <InputLabel htmlFor="component-error">Пароль:</InputLabel>
                     <Input
                         {...register('password', {
-                            required: "This is required.",
+                            required: "Обов'язкове поле",
                             minLength: {
                                 value: 6,
                                 message: "min 6 length"

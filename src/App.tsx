@@ -23,7 +23,7 @@ const App: React.FC<{ children: React.ReactNode }> = (props) => {
             setLoading(false); // Set loading to false after data is fetched
         };
 
-        fetchData();
+        fetchData().catch(() => setLoading(false)); // Ensure loading is stopped even if fetch fails
 
         console.log('categories loaded');
         console.log('init app components');
