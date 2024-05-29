@@ -206,7 +206,7 @@ const AuctionListPage: React.FC<{}> = () => {
                                             {row.name}
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary">
-                                            {brandList.find(item => item.id === row.brandId)?.name} / {brandList.find(item => item.id === row.brandId)?.modelList.find(model => model.id === row.modelId)?.name}
+                                            {brandList.find(item => item._id === row.brandId)?.name} / {brandList.find(item => item._id === row.brandId)?.modelList.find(model => model._id === row.modelId)?.name}
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary">
                                             Дата Закриття: {moment.unix(row.dateClose).format('MM Do YYYY, h:mm:ss ')}

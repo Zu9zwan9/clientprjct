@@ -28,6 +28,8 @@ import moment, {Moment} from "moment";
 import {BASE_URL} from "store/config";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import {getCarModelsByBrandId} from "../../../store/slice/auction/actions/GetCarModelsByBrandId";
+import {getCarBrandList} from "../../../store/slice/auction/actions/GetCarBrands";
 
 const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
 
@@ -62,21 +64,16 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
     let dispatch = useAppDispatch();
 
     function onSubmit(data: Auction) {
-
-        console.log(data);
+        data.brandId =  data.brandId ? data.brandId : "";
+        data.modelId =  data.modelId ? data.modelId : "";
 
         dispatch(data._id ? editAuction(data) : createAuction(data))
             .then(unwrapResult)
             .then((result) => {
                 setNotification("Запит успішно виконаний");
-                //reset();
-                //console.log("result",result)
-                //navigate("/");
             }).catch(error => {
             setErrorMsg(error);
-
         });
-
     }
 
     const handleThumbnailChange = async (newValue: any) => {
@@ -86,9 +83,23 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
     }
 
     useEffect(() => {
+        dispatch(getCarBrandList());
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (watchBrand) {
+            dispatch(getCarModelsByBrandId(watchBrand.toString())).then((result) => {
+                if (result.meta.requestStatus === 'fulfilled') {
+                    setModelList(result.payload);
+                }
+            });
+        }
+    }, [watchBrand, dispatch]);
+
+    useEffect(() => {
         console.log("handleOnCarBrandChange", watchBrand);
         setValue("modelId", undefined);
-        let brand = brandList.find(item => item.id == watchBrand);
+        let brand = brandList.find(item => item._id == watchBrand);
         if (brand) setModelList(brand.modelList);
     }, [watchBrand])
 
@@ -98,7 +109,7 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
             Object.entries(props.object).forEach(
                 ([name, value]: any) => setValue(name, value));
 
-            let brand = brandList.find(item => item.id == props.object?.brandId);
+            let brand = brandList.find(item => item._id == props.object?.brandId);
             if (brand) setModelList(brand.modelList);
 
             setValueDatePicker(moment.unix(props.object.dateClose));
@@ -249,7 +260,6 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                                 >
                                 </DemoItem>
                                 <Controller
-
                                     name="brandId"
                                     control={control}
                                     render={({field}) => (
@@ -261,10 +271,9 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                                             variant="filled"
                                             fullWidth
                                             label="Виробник"
-
                                         >
-                                            {brandList.map(item => <MenuItem key={item.id}
-                                                                             value={item.id}>{item.name}</MenuItem>)}
+                                            {brandList.map(item => <MenuItem key={item._id}
+                                                                             value={item._id}>{item.name}</MenuItem>)}
                                         </Select>
                                     )}
                                 />
@@ -289,11 +298,9 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                                             variant="filled"
                                             fullWidth
                                             label="Модель"
-
-
                                         >
-                                            {modelList.map(item => <MenuItem key={item.id}
-                                                                             value={item.id}>{item.name}</MenuItem>)}
+                                            {modelList?.map(item => <MenuItem key={item._id}
+                                                                             value={item._id}>{item.name}</MenuItem>)}
                                         </Select>
                                     )}
                                 />

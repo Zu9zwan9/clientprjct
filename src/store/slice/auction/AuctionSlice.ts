@@ -1,14 +1,16 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {CAR_BRAND_LIST} from "data/CarBrand";
 import {CAR_TYPE} from "data/CarType";
 import {AuctionState} from "types/state/AuctionState";
 import {getAuctionById} from "./actions/GetAuctionById";
 import {getAuctionRate} from "./actions/GetAuctionRate";
+import { getCarModelsByBrandId } from "./actions/GetCarModelsByBrandId";
+import { getCarBrandList } from "./actions/GetCarBrands";
 import {AuctionStatusEnum} from "types/enums/AuctionStatusEnum";
 
 const initialState = {
     auctionList: [],
-    brandList: CAR_BRAND_LIST,
+    brandList: [],
+    modelList: [],
     carTypeList: CAR_TYPE,
     activeRateList: []
 } as AuctionState;
@@ -18,10 +20,10 @@ const auctionSlice = createSlice({
     initialState: initialState,
     reducers: {
         setActiveAuction(state, action) {
-            state.activeAuction = action.payload
+            state.activeAuction = action.payload;
 
             if (!action.payload) {
-                state.activeRateList = []
+                state.activeRateList = [];
             }
         },
         sendAuctionRate(state, action) {
@@ -31,30 +33,26 @@ const auctionSlice = createSlice({
             state.activeRateList.unshift(action.payload);
         },
         closeActiveAuction(state, action) {
-            console.log("action.payload", action.payload);
-            console.log("state.activeAuction._id", state.activeAuction?._id);
-
             if (state.activeAuction && action.payload === state.activeAuction._id) {
                 state.activeAuction.status = AuctionStatusEnum.CLOSE;
             }
         }
-
-
     },
     extraReducers: (builder) => {
         builder.addCase(getAuctionById.fulfilled, (state, action) => {
             state.activeAuction = action.payload;
         });
         builder.addCase(getAuctionRate.fulfilled, (state, action) => {
-            console.log(action.payload);
             state.activeRateList = action.payload;
         });
-
-
+        builder.addCase(getCarBrandList.fulfilled, (state, action) => {
+            state.brandList = action.payload;
+        });
+        builder.addCase(getCarModelsByBrandId.fulfilled, (state, action) => {
+            state.modelList = action.payload;
+        });
     }
-
 });
-
 
 export const {
     setActiveAuction,

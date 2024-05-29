@@ -9,8 +9,8 @@ export interface Auction extends Entity {
     carMileage: number;
     color: string;
     year: number;
-    modelId: number | undefined;
-    brandId: number | undefined;
+    modelId: string | undefined;
+    brandId: string | undefined;
     thumbnail_file: File;
     thumbnail: string;
     dateCreate: string;

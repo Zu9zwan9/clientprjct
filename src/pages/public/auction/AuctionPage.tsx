@@ -60,7 +60,7 @@ const AuctionPage: React.FC<{}> = () => {
             setCurrentRate(activeAuction.price);
             dispatch(getAuctionRate(activeAuction._id));
             dispatch(GetAuctionComment(activeAuction._id));
-            setCurrentBrand(brandList.find(i => i.id == activeAuction.brandId));
+            setCurrentBrand(brandList.find(i => i._id == activeAuction.brandId));
         }
     }, [activeAuction]);
 
@@ -123,7 +123,7 @@ const AuctionPage: React.FC<{}> = () => {
                                             <Chip label={`Категорія: ${categoryList.find(i => i._id == activeAuction.categoryId)?.name}`} icon={<InfoIcon />} />
                                             <Chip label={`Тип: ${carTypeList.find(i => i.id == activeAuction.type)?.name}`} icon={<InfoIcon />} />
                                             <Chip label={`Бренд: ${currentBrand?.name}`} icon={<InfoIcon />} />
-                                            <Chip label={`Модель: ${currentBrand?.modelList.find(i => i.id == activeAuction.modelId)?.name}`} icon={<InfoIcon />} />
+                                            <Chip label={`Модель: ${currentBrand?.modelList.find(i => i._id == activeAuction.modelId)?.name}`} icon={<InfoIcon />} />
                                             <Chip label={`ВІН код: ${activeAuction.vinCode}`} icon={<InfoIcon />} />
                                             <Chip label={`Пробіг: ${activeAuction.carMileage}`} icon={<InfoIcon />} />
                                             <Chip label={`Рік: ${activeAuction.year}`} icon={<InfoIcon />} />

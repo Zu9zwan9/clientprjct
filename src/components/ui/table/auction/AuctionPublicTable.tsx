@@ -35,11 +35,11 @@ const AuctionPublicTable: React.FC<AuctionPublicTableProps> = (props) => {
     const navigate = useNavigate();
 
     function getCarCaption(item: Auction) {
-        const brand = brandList.find(_item => _item.id == item.brandId);
+        const brand = brandList.find(_item => _item._id == item.brandId);
         let caption = "";
         if (brand) {
             caption = caption.concat(brand.name);
-            const model = brand.modelList.find(_item => _item.id == item.modelId);
+            const model = brand.modelList.find(_item => _item._id == item.modelId);
             if (model) {
                 caption = caption.concat(" / ").concat(model.name);
             }

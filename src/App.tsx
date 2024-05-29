@@ -7,6 +7,7 @@ import { wsInit } from "store/slice/socket/SocketSlice";
 import { setActiveUser } from "store/slice/user/UserSlice";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import {getCarBrandList} from "./store/slice/auction/actions/GetCarBrands";
 
 const App: React.FC<{ children: React.ReactNode }> = (props) => {
     const dispatch = useAppDispatch();
@@ -20,6 +21,7 @@ const App: React.FC<{ children: React.ReactNode }> = (props) => {
             }
             await dispatch(wsInit());
             await dispatch(getCategoryList());
+            await dispatch(getCarBrandList());
             setLoading(false); // Set loading to false after data is fetched
         };
 
