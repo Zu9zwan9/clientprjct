@@ -3,7 +3,6 @@ import {CAR_TYPE} from "data/CarType";
 import {AuctionState} from "types/state/AuctionState";
 import {getAuctionById} from "./actions/GetAuctionById";
 import {getAuctionRate} from "./actions/GetAuctionRate";
-import { getCarModelsByBrandId } from "./actions/GetCarModelsByBrandId";
 import { getCarBrandList } from "./actions/GetCarBrands";
 import {AuctionStatusEnum} from "types/enums/AuctionStatusEnum";
 
@@ -47,9 +46,6 @@ const auctionSlice = createSlice({
         });
         builder.addCase(getCarBrandList.fulfilled, (state, action) => {
             state.brandList = action.payload;
-        });
-        builder.addCase(getCarModelsByBrandId.fulfilled, (state, action) => {
-            state.modelList = action.payload;
         });
     }
 });

@@ -25,10 +25,8 @@ import {DemoContainer, DemoItem} from '@mui/x-date-pickers/internals/demo';
 import {DateTimePicker} from '@mui/x-date-pickers/DateTimePicker';
 import {editAuction} from "store/slice/auction/actions/EditAuction";
 import moment, {Moment} from "moment";
-import {BASE_URL} from "store/config";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import {getCarModelsByBrandId} from "../../../store/slice/auction/actions/GetCarModelsByBrandId";
 import {getCarBrandList} from "../../../store/slice/auction/actions/GetCarBrands";
 
 const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
@@ -85,16 +83,6 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
     useEffect(() => {
         dispatch(getCarBrandList());
     }, [dispatch]);
-
-    useEffect(() => {
-        if (watchBrand) {
-            dispatch(getCarModelsByBrandId(watchBrand.toString())).then((result) => {
-                if (result.meta.requestStatus === 'fulfilled') {
-                    setModelList(result.payload);
-                }
-            });
-        }
-    }, [watchBrand, dispatch]);
 
     useEffect(() => {
         console.log("handleOnCarBrandChange", watchBrand);

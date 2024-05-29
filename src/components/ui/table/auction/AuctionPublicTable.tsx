@@ -39,7 +39,7 @@ const AuctionPublicTable: React.FC<AuctionPublicTableProps> = (props) => {
         let caption = "";
         if (brand) {
             caption = caption.concat(brand.name);
-            const model = brand.modelList.find(_item => _item._id == item.modelId);
+            const model = brand.modelList?.find(_item => _item._id == item.modelId);
             if (model) {
                 caption = caption.concat(" / ").concat(model.name);
             }

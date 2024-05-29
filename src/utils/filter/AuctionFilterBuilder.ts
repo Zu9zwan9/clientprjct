@@ -4,7 +4,7 @@ export class AuctionFilterBuilder {
 
     private category: string = "";
 
-    private brand: number = -1;
+    private brand: string = "";
 
     private model: string = "";
 
@@ -42,9 +42,8 @@ export class AuctionFilterBuilder {
         return this.category;
     }
 
-    public setBrand(value: number) {
-        this.brand = !isNaN(value) ? value : -1;
-
+    public setBrand(value: string) {
+        this.brand = value?.length ? value : "";
         return this;
     }
 
@@ -53,8 +52,7 @@ export class AuctionFilterBuilder {
     }
 
     public setModel(value: string) {
-        this.model = value;
-
+        this.model = value?.length ? value : "";
         return this;
     }
 

@@ -70,8 +70,8 @@ const AuctionListPage: React.FC<{}> = () => {
     }
 
     function handleChangeBrandFilter(event: SelectChangeEvent) {
-        setFilter(filter?.setBrand(parseInt(event.target.value)));
-        const brand = brandList.find(item => item.id == parseInt(event.target.value));
+        setFilter(filter?.setBrand(event.target.value));
+        const brand = brandList.find(item => item._id == event.target.value);
         if (brand) setCarModelList(brand.modelList);
     }
 
@@ -139,9 +139,9 @@ const AuctionListPage: React.FC<{}> = () => {
                                         id="brand-select"
                                         onChange={handleChangeBrandFilter}
                                     >
-                                        <MenuItem value="-1">-</MenuItem>
+                                        <MenuItem value="">-</MenuItem>
                                         {brandList.map(item => (
-                                            <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                                            <MenuItem key={item._id} value={item._id}>{item.name}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
@@ -152,9 +152,9 @@ const AuctionListPage: React.FC<{}> = () => {
                                         id="model-select"
                                         onChange={handleChangeModelFilter}
                                     >
-                                        <MenuItem value="-1">-</MenuItem>
-                                        {carModelList.map(item => (
-                                            <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                                        <MenuItem value="">-</MenuItem>
+                                        {carModelList?.map(item => (
+                                            <MenuItem key={item._id} value={item._id}>{item.name}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
@@ -206,7 +206,7 @@ const AuctionListPage: React.FC<{}> = () => {
                                             {row.name}
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary">
-                                            {brandList.find(item => item._id === row.brandId)?.name} / {brandList.find(item => item._id === row.brandId)?.modelList.find(model => model._id === row.modelId)?.name}
+                                            {brandList.find(item => item._id === row.brandId)?.name} / {brandList.find(item => item._id === row.brandId)?.modelList?.find(model => model._id === row.modelId)?.name}
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary">
                                             Дата Закриття: {moment.unix(row.dateClose).format('MM Do YYYY, h:mm:ss ')}
