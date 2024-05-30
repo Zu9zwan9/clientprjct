@@ -3,15 +3,18 @@ import {CAR_TYPE} from "data/CarType";
 import {AuctionState} from "types/state/AuctionState";
 import {getAuctionById} from "./actions/GetAuctionById";
 import {getAuctionRate} from "./actions/GetAuctionRate";
-import { getCarBrandList } from "./actions/GetCarBrands";
+import {getCarBrandList} from "./actions/GetCarBrands";
 import {AuctionStatusEnum} from "types/enums/AuctionStatusEnum";
+import {getCountryList} from "./actions/GetCountries";
 
 const initialState = {
     auctionList: [],
     brandList: [],
     modelList: [],
     carTypeList: CAR_TYPE,
-    activeRateList: []
+    activeRateList: [],
+    countryList: [],
+    locationList: [],
 } as AuctionState;
 
 const auctionSlice = createSlice({
@@ -46,6 +49,9 @@ const auctionSlice = createSlice({
         });
         builder.addCase(getCarBrandList.fulfilled, (state, action) => {
             state.brandList = action.payload;
+        });
+        builder.addCase(getCountryList.fulfilled, (state, action) => {
+            state.countryList = action.payload;
         });
     }
 });

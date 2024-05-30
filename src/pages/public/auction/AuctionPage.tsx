@@ -31,16 +31,18 @@ import { toast } from "react-toastify";
 import AuctionRateCard from "components/ui/cards/auction-rate/AuctionRateCard";
 import { AuctionStatusEnum } from "types/enums/AuctionStatusEnum";
 import { CarBrand } from "models/CarBrand";
+import { Country } from "models/Country";
 import CommentForm from "components/forms/comment/CommentForm";
 
 const AuctionPage: React.FC<{}> = () => {
-    const { activeAuction, carTypeList, activeRateList, brandList } = useAppSelector(state => state.auction);
+    const { activeAuction, carTypeList, activeRateList, brandList, countryList } = useAppSelector(state => state.auction);
     const { categoryList } = useAppSelector(state => state.category);
     const { commentList } = useAppSelector(state => state.comment);
     const { activeUser } = useAppSelector(state => state.user);
 
     const [currentRate, setCurrentRate] = useState<number>(0);
     const [currentBrand, setCurrentBrand] = useState<CarBrand>();
+    const [currentCountry, setCurrentCountry] = useState<Country>();
     const { id } = useParams();
     const dispatch = useAppDispatch();
 
@@ -61,6 +63,7 @@ const AuctionPage: React.FC<{}> = () => {
             dispatch(getAuctionRate(activeAuction._id));
             dispatch(GetAuctionComment(activeAuction._id));
             setCurrentBrand(brandList.find(i => i._id == activeAuction.brandId));
+            setCurrentCountry(countryList.find(i => i._id == activeAuction.countryId));
         }
     }, [activeAuction]);
 
@@ -124,6 +127,8 @@ const AuctionPage: React.FC<{}> = () => {
                                             <Chip label={`Тип: ${carTypeList.find(i => i.id == activeAuction.type)?.name}`} icon={<InfoIcon />} />
                                             <Chip label={`Бренд: ${currentBrand?.name}`} icon={<InfoIcon />} />
                                             <Chip label={`Модель: ${currentBrand?.modelList?.find(i => i._id == activeAuction.modelId)?.name}`} icon={<InfoIcon />} />
+                                            <Chip label={`Країна: ${currentCountry?.name}`} icon={<InfoIcon />} />
+                                            <Chip label={`Місто: ${currentCountry?.locationList?.find(i => i._id == activeAuction.locationId)?.name}`} icon={<InfoIcon />} />
                                             <Chip label={`ВІН код: ${activeAuction.vinCode}`} icon={<InfoIcon />} />
                                             <Chip label={`Пробіг: ${activeAuction.carMileage}`} icon={<InfoIcon />} />
                                             <Chip label={`Рік: ${activeAuction.year}`} icon={<InfoIcon />} />

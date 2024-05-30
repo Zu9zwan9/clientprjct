@@ -11,6 +11,8 @@ export interface Auction extends Entity {
     year: number;
     modelId: string | undefined;
     brandId: string | undefined;
+    countryId: string | undefined;
+    locationId: string | undefined;
     thumbnail_file: File;
     thumbnail: string;
     dateCreate: string;

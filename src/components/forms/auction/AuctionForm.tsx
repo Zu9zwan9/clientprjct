@@ -27,14 +27,17 @@ import {editAuction} from "store/slice/auction/actions/EditAuction";
 import moment, {Moment} from "moment";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import {getCarBrandList} from "../../../store/slice/auction/actions/GetCarBrands";
+import {getCarBrandList} from "store/slice/auction/actions/GetCarBrands";
+import {getCountryList} from "store/slice/auction/actions/GetCountries";
+import {Location} from "models/Location"
 
 const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
 
-    const {brandList, carTypeList} = useAppSelector(state => state.auction);
+    const {brandList, carTypeList, countryList} = useAppSelector(state => state.auction);
     const {categoryList} = useAppSelector(state => state.category);
 
     const [modelList, setModelList] = useState<CarModel[]>([]);
+    const [locationList, setLocationList] = useState<Location[]>([]);
     const [thumbnail, setThumbnail] = useState<any>();
     const [valueDatePicker, setValueDatePicker] = useState<Moment>();
 
@@ -52,6 +55,7 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
     });
 
     const watchBrand = watch('brandId');
+    const watchCountry = watch('countryId');
 
     const {setNotification} = useDashboardContext();
 
@@ -64,6 +68,8 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
     function onSubmit(data: Auction) {
         data.brandId =  data.brandId ? data.brandId : "";
         data.modelId =  data.modelId ? data.modelId : "";
+        data.countryId =  data.countryId ? data.countryId : "";
+        data.locationId =  data.locationId ? data.locationId : "";
 
         dispatch(data._id ? editAuction(data) : createAuction(data))
             .then(unwrapResult)
@@ -85,11 +91,22 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
     }, [dispatch]);
 
     useEffect(() => {
+        dispatch(getCountryList());
+    }, [dispatch]);
+
+    useEffect(() => {
         console.log("handleOnCarBrandChange", watchBrand);
         setValue("modelId", undefined);
         let brand = brandList.find(item => item._id == watchBrand);
         if (brand) setModelList(brand.modelList);
     }, [watchBrand])
+
+    useEffect(() => {
+        console.log("handleOnCountryChange", watchCountry);
+        setValue("locationId", undefined);
+        let country = countryList.find(item => item._id == watchCountry);
+        if (country) setLocationList(country.locationList);
+    }, [watchCountry])
 
     useEffect(() => {
 
@@ -99,6 +116,9 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
 
             let brand = brandList.find(item => item._id == props.object?.brandId);
             if (brand) setModelList(brand.modelList);
+
+            let country = countryList.find(item => item._id == props.object?.countryId);
+            if (country) setLocationList(country.locationList);
 
             setValueDatePicker(moment.unix(props.object.dateClose));
             setThumbnail(`${props.object.thumbnail}`);
@@ -110,6 +130,11 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
         props.object && setValue("modelId", props.object.modelId);
 
     }, [modelList]);
+
+    useEffect(() => {
+        props.object && setValue("locationId", props.object.locationId);
+
+    }, [locationList]);
 
 
     return (
@@ -269,7 +294,7 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                                     <FormHelperText id="input-name">{errors.brandId?.message}</FormHelperText>}
 
                             </FormControl>
-                            <FormControl fullWidth error={errors.brandId ? true : false} variant="standard">
+                            <FormControl fullWidth error={errors.modelId ? true : false} variant="standard">
                                 <DemoItem
                                     label={"Модель"}
                                 >
@@ -288,12 +313,73 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                                             label="Модель"
                                         >
                                             {modelList?.map(item => <MenuItem key={item._id}
+                                                                              value={item._id}>{item.name}</MenuItem>)}
+                                        </Select>
+                                    )}
+                                />
+                                {errors.modelId &&
+                                    <FormHelperText id="input-name">{errors.modelId?.message}</FormHelperText>}
+                            </FormControl>
+                        </Stack>
+                    </Grid>
+
+                </Grid>
+                <Grid container>
+
+                    <Grid item xs={12}>
+                        <Stack direction="row" spacing={2}>
+                            <FormControl fullWidth error={errors.countryId ? true : false} variant="standard">
+                                <DemoItem
+                                    label={"Країна"}
+                                >
+                                </DemoItem>
+                                <Controller
+                                    name="countryId"
+                                    control={control}
+                                    render={({field}) => (
+                                        <Select
+                                            {...field}
+                                            labelId="country-select-standard-label"
+                                            id="country-select-standard"
+                                            value={field.value ? field.value : ""}
+                                            variant="filled"
+                                            fullWidth
+                                            label="Країна"
+                                        >
+                                            {countryList.map(item => <MenuItem key={item._id}
                                                                              value={item._id}>{item.name}</MenuItem>)}
                                         </Select>
                                     )}
                                 />
-                                {errors.brandId &&
-                                    <FormHelperText id="input-name">{errors.brandId?.message}</FormHelperText>}
+                                {errors.countryId &&
+                                    <FormHelperText id="input-name">{errors.countryId?.message}</FormHelperText>}
+
+                            </FormControl>
+                            <FormControl fullWidth error={errors.locationId ? true : false} variant="standard">
+                                <DemoItem
+                                    label={"Місто"}
+                                >
+                                </DemoItem>
+                                <Controller
+                                    name="locationId"
+                                    control={control}
+                                    render={({field}) => (
+                                        <Select
+                                            {...field}
+                                            labelId="location-select-standard-label"
+                                            id="location-select-standard"
+                                            value={field.value ? field.value : ""}
+                                            variant="filled"
+                                            fullWidth
+                                            label="Місто"
+                                        >
+                                            {locationList?.map(item => <MenuItem key={item._id}
+                                                                              value={item._id}>{item.name}</MenuItem>)}
+                                        </Select>
+                                    )}
+                                />
+                                {errors.locationId &&
+                                    <FormHelperText id="input-name">{errors.locationId?.message}</FormHelperText>}
                             </FormControl>
                         </Stack>
                     </Grid>

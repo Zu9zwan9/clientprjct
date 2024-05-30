@@ -27,6 +27,7 @@ import { CarModel } from "models/CarModel";
 import EditIcon from "@mui/icons-material/Edit";
 import moment from "moment";
 import { AuctionStatusEnum } from "../../../types/enums/AuctionStatusEnum";
+import { Location } from "models/Location";
 
 const AuctionListPage: React.FC<{}> = () => {
     const sortList = [
@@ -35,11 +36,12 @@ const AuctionListPage: React.FC<{}> = () => {
         { value: "commercial", label: "Комерційні" },
     ];
 
-    const { carTypeList, brandList } = useAppSelector(state => state.auction);
+    const { carTypeList, brandList, countryList } = useAppSelector(state => state.auction);
     const { categoryList } = useAppSelector(state => state.category);
 
     const [auctionList, setAuctionList] = useState<Auction[]>([]);
     const [carModelList, setCarModelList] = useState<CarModel[]>([]);
+    const [locationList, setLocationList] = useState<Location[]>([]);
     const [filter, setFilter] = useState<AuctionFilterBuilder>();
     const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
@@ -77,6 +79,16 @@ const AuctionListPage: React.FC<{}> = () => {
 
     function handleChangeModelFilter(event: SelectChangeEvent) {
         setFilter(filter?.setModel(event.target.value));
+    }
+
+    function handleChangeCountryFilter(event: SelectChangeEvent) {
+        setFilter(filter?.setCountry(event.target.value));
+        const country = countryList.find(item => item._id == event.target.value);
+        if (country) setLocationList(country.locationList);
+    }
+
+    function handleChangeLocationFilter(event: SelectChangeEvent) {
+        setFilter(filter?.setLocation(event.target.value));
     }
 
     function handleChangeCategoryFilter(event: SelectChangeEvent) {
@@ -158,6 +170,32 @@ const AuctionListPage: React.FC<{}> = () => {
                                         ))}
                                     </Select>
                                 </FormControl>
+                                <FormControl fullWidth>
+                                    <InputLabel id="country-select-label">Країна</InputLabel>
+                                    <Select
+                                        labelId="country-select-label"
+                                        id="country-select"
+                                        onChange={handleChangeCountryFilter}
+                                    >
+                                        <MenuItem value="">-</MenuItem>
+                                        {countryList.map(item => (
+                                            <MenuItem key={item._id} value={item._id}>{item.name}</MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                                <FormControl fullWidth>
+                                    <InputLabel id="location-select-label">Місто</InputLabel>
+                                    <Select
+                                        labelId="location-select-label"
+                                        id="location-select"
+                                        onChange={handleChangeLocationFilter}
+                                    >
+                                        <MenuItem value="">-</MenuItem>
+                                        {locationList?.map(item => (
+                                            <MenuItem key={item._id} value={item._id}>{item.name}</MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
                                 <Stack direction="row" spacing={2}>
                                     <TextField onChange={(e) => setFilter(filter?.setYearFrom(parseInt(e.target.value)))} label="Рік з" variant="outlined" fullWidth />
                                     <TextField onChange={(e) => setFilter(filter?.setYearTo(parseInt(e.target.value)))} label="Рік по" variant="outlined" fullWidth />
@@ -207,6 +245,9 @@ const AuctionListPage: React.FC<{}> = () => {
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary">
                                             {brandList.find(item => item._id === row.brandId)?.name} / {brandList.find(item => item._id === row.brandId)?.modelList?.find(model => model._id === row.modelId)?.name}
+                                        </Typography>
+                                        <Typography variant="body2" color="textSecondary">
+                                            {countryList.find(item => item._id === row.countryId)?.name} / {countryList.find(item => item._id === row.countryId)?.locationList?.find(location => location._id === row.locationId)?.name}
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary">
                                             Дата Закриття: {moment.unix(row.dateClose).format('MM Do YYYY, h:mm:ss ')}

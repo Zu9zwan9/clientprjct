@@ -8,6 +8,10 @@ export class AuctionFilterBuilder {
 
     private model: string = "";
 
+    private country: string = "";
+
+    private location: string = "";
+
     private yearFrom: number = 0;
 
     private yearTo: number = -1
@@ -58,6 +62,24 @@ export class AuctionFilterBuilder {
 
     public getModel() {
         return this.model;
+    }
+
+    public setCountry(value: string) {
+        this.country = value?.length ? value : "";
+        return this;
+    }
+
+    public getCountry() {
+        return this.country;
+    }
+
+    public setLocation(value: string) {
+        this.location = value?.length ? value : "";
+        return this;
+    }
+
+    public getLocation() {
+        return this.location;
     }
 
     public setType(value: string) {
