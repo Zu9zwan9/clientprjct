@@ -188,7 +188,7 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                             <Select
                                 {...field}
                                 labelId="type-select-standard-label"
-                                label="Тип автомобіля"
+                                label="Тип кузова"
                                 id="category-select-standard"
                                 value={field.value ? field.value : ""}
                                 variant="filled"

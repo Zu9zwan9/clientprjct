@@ -41,7 +41,7 @@ const AuctionPublicTable: React.FC<AuctionPublicTableProps> = (props) => {
 
     function getLatestBid(auctionId: string) {
         const bid = props.latestBids[auctionId];
-        return bid ? `${bid.value} $` : "No bids yet";
+        return bid ? `${bid.value} $` : "Ставки поки що відсутні";
     }
 
     return (
@@ -59,22 +59,22 @@ const AuctionPublicTable: React.FC<AuctionPublicTableProps> = (props) => {
                                         {row.name}
                                     </Typography>
                                     <Typography variant="body2" color="textSecondary">
-                                        {getCarCaption(row)}
+                                        Виробник/Модель:  {getCarCaption(row)}
                                     </Typography>
                                     <Typography variant="body2" color="textSecondary">
                                         Дата Закриття: {moment.unix(row.dateClose).format('MM Do YYYY, h:mm:ss ')}
                                     </Typography>
                                     <Typography variant="body2" color="textSecondary">
-                                        Стартова ціна: {row.price}
+                                        Стартова ціна: {row.price} $
                                     </Typography>
                                     <Typography variant="body2" color="textSecondary">
                                         Рік: {row.year}
                                     </Typography>
                                     <Typography variant="body2" color="textSecondary">
-                                        Пробіг: {row.carMileage}
+                                        Пробіг: {row.carMileage} км
                                     </Typography>
                                     <Typography variant="body2" color="textSecondary">
-                                        Тип Авто: {carTypeList.find(item => item.id === row.type)?.name}
+                                        Тип кузова: {carTypeList.find(item => item.id === row.type)?.name}
                                     </Typography>
                                     <Typography variant="body2" color="textSecondary">
                                         Остання ставка: {getLatestBid(row._id)}
@@ -86,9 +86,8 @@ const AuctionPublicTable: React.FC<AuctionPublicTableProps> = (props) => {
                                     />
                                 </CardContent>
                                 <CardActions>
-                                    <Button size="small" onClick={() => navigate(`/auction/${row._id}`)}>
-                                        <EditIcon />
-                                        Переглянути
+                                    <Button onClick={() => navigate(`/auction/${row._id}`)}>
+                                        <Chip color="info" variant="filled" icon={<EditIcon />} label="Переглянути" />
                                     </Button>
                                 </CardActions>
                             </Card>
@@ -124,7 +123,7 @@ const AuctionPublicTable: React.FC<AuctionPublicTableProps> = (props) => {
                                         Пробіг: {row.carMileage}
                                     </Typography>
                                     <Typography variant="body2" color="textSecondary">
-                                        Тип Авто: {carTypeList.find(item => item.id === row.type)?.name}
+                                        Тип кузова: {carTypeList.find(item => item.id === row.type)?.name}
                                     </Typography>
                                     <Typography variant="body2" color="textSecondary">
                                         Остання ставка: {getLatestBid(row._id)}

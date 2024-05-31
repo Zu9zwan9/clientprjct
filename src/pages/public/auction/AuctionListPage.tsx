@@ -223,7 +223,7 @@ const AuctionListPage: React.FC<{}> = () => {
                                     <TextField onChange={(e) => setFilter(filter?.setPriceTo(parseInt(e.target.value)))} label="Ціна по" variant="outlined" fullWidth />
                                 </Stack>
                                 <FormControl fullWidth>
-                                    <InputLabel id="car-type-select-label">Тип автомобіля</InputLabel>
+                                    <InputLabel id="car-type-select-label">Тип кузова</InputLabel>
                                     <Select
                                         labelId="car-type-select-label"
                                         id="car-type-select"
@@ -279,7 +279,7 @@ const AuctionListPage: React.FC<{}> = () => {
                                             Тип Авто: {carTypeList.find(item => item.id === row.type)?.name}
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary">
-                                            Остання ставка: {latestBids[row._id] ? `${latestBids[row._id]?.value} $` : "No bids yet"}
+                                            Остання ставка: {latestBids[row._id] ? `${latestBids[row._id]?.value} $` : "Ставки поки що відсутні"}
                                         </Typography>
                                         <Chip
                                             label={row.status === AuctionStatusEnum.ACTIVE ? "Активний" : "Завершений"}
