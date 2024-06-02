@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "hooks/app";
 import { useParams } from "react-router-dom";
-import {
-    checkFollowStatus,
-    followPrice,
-    sendAuctionRate,
-    setActiveAuction,
-    unfollowPrice
-} from "store/slice/auction/AuctionSlice";
+import {followPrice, sendAuctionRate, setActiveAuction, unfollowPrice} from "store/slice/auction/AuctionSlice";
 import { getAuctionById } from "store/slice/auction/actions/GetAuctionById";
 import { getAuctionRate } from "store/slice/auction/actions/GetAuctionRate";
 import { GetAuctionComment } from "store/slice/comment/actions/GetAuctionComment";
@@ -52,12 +46,7 @@ const AuctionPage: React.FC<{}> = () => {
     const { id } = useParams();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const dispatch = useAppDispatch();
-    useEffect(() => {
-        if (id) {
-            dispatch(getAuctionById(id));
-            dispatch(checkFollowStatus(id)); // Додаємо перевірку статусу підписки
-        }
-    }, [id]);
+
 
     useEffect(() => {
         if (id) dispatch(getAuctionById(id));
@@ -114,6 +103,7 @@ const AuctionPage: React.FC<{}> = () => {
             }
         }
     }
+
     const handleFollowClick = () => {
         if (activeAuction) {
             dispatch(followPrice(activeAuction._id))

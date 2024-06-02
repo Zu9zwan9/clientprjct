@@ -17,7 +17,6 @@ const initialState = {
     activeRateList: [],
     countryList: [],
     locationList: [],
-    isFollowing: false,
 } as AuctionState;
 
 
@@ -105,13 +104,10 @@ const auctionSlice = createSlice({
             state.countryList = action.payload;
         });
         builder.addCase(followPrice.fulfilled, (state, action) => {
-            state.isFollowing = true; // Оновлюємо стан підписки
+            // Handle follow price success
         });
         builder.addCase(unfollowPrice.fulfilled, (state, action) => {
-            state.isFollowing = false; // Оновлюємо стан підписки
-        });
-        builder.addCase(checkFollowStatus.fulfilled, (state, action) => {
-            state.isFollowing = action.payload.followed; // Оновлюємо стан підписки
+            // Handle unfollow price success
         });
     }
 });

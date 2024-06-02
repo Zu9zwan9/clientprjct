@@ -15,6 +15,5 @@ export interface AuctionState {
     activeRateList: AuctionRate[];
     countryList: Country[];
     locationList: Location[];
-    isFollowing: boolean;
 
 }
