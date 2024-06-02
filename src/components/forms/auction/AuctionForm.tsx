@@ -30,12 +30,9 @@ import Checkbox from "@mui/material/Checkbox";
 import {getCarBrandList} from "store/slice/auction/actions/GetCarBrands";
 import {getCountryList} from "store/slice/auction/actions/GetCountries";
 import {Location} from "models/Location"
-
 const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
-
     const {brandList, carTypeList, countryList} = useAppSelector(state => state.auction);
     const {categoryList} = useAppSelector(state => state.category);
-
     const [modelList, setModelList] = useState<CarModel[]>([]);
     const [locationList, setLocationList] = useState<Location[]>([]);
     const [thumbnail, setThumbnail] = useState<any>();
@@ -53,19 +50,47 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
         mode: 'all',
         shouldUnregister: false,
     });
-
     const watchBrand = watch('brandId');
     const watchCountry = watch('countryId');
-
     const {setNotification} = useDashboardContext();
-
     const [errorMsg, setErrorMsg] = useState<string>();
-
     const navigate = useNavigate();
-
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const colorOptions = [
+        { color: "#ff0000", label: "Червоний" },
+        { color: "#00ff00", label: "Зелений" },
+        { color: "#0000ff", label: "Синій" },
+        { color: "#ffff00", label: "Жовтий" },
+        { color: "#ffa500", label: "Помаранчевий" },
+        { color: "#800080", label: "Фіолетовий" },
+        { color: "#000000", label: "Чорний" },
+        { color: "#ffffff", label: "Білий" },
+        { color: "#808080", label: "Сірий" },
+        { color: "#800000", label: "Коричневий" },
+        { color: "#008000", label: "Зелений" },
+        { color: "#000080", label: "Темно-синій" },
+        { color: "#008080", label: "Бірюзовий" },
+        { color: "#c0c0c0", label: "Сріблястий" },
+        { color: "#ff00ff", label: "Рожевий" },
+        { color: "#ffa07a", label: "Лососевий" },
+        { color: "#f0e68c", label: "Хакі" },
+        { color: "#d3d3d3", label: "Світло-сірий" },
+        { color: "#ff4500", label: "Помаранчево-червоний" },
+        { color: "#ff69b4", label: "Рожево-фіолетовий" },
+        { color: "#f0ffff", label: "Блідо-блакитний" },
+        { color: "#f5f5dc", label: "Блідо-золотий" },
+        { color: "#f5f5f5", label: "Блідо-сірий" },
+        { color: "#f5fffa", label: "М'ятний" },
+];
     let dispatch = useAppDispatch();
 
     function onSubmit(data: Auction) {
+        setIsSubmitting(true);
+        if (!data.dateClose || data.dateClose < moment().unix()) {
+            setNotification( "Неможливо створити аукціон минулою датою або без дати закриття");
+            setIsSubmitting(false);
+            return;
+        }
         data.brandId =  data.brandId ? data.brandId : "";
         data.modelId =  data.modelId ? data.modelId : "";
         data.countryId =  data.countryId ? data.countryId : "";
@@ -75,8 +100,12 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
             .then(unwrapResult)
             .then((result) => {
                 setNotification("Запит успішно виконаний");
+                setTimeout(() => {
+                navigate('/');
+                }, 2000);
             }).catch(error => {
             setErrorMsg(error);
+            setIsSubmitting(false);
         });
     }
 
@@ -144,6 +173,7 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                     <Controller
                         name="name"
                         control={control}
+                        rules={{ required: "Категорія обов'язкова" }}
                         render={({field}) => (
                             <TextField
                                 {...field}
@@ -161,6 +191,7 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                     <Controller
                         name="categoryId"
                         control={control}
+                        rules={{ required: "Категорія обов'язкова" }}
                         render={({field}) => (
                             <Select
                                 {...field}
@@ -184,6 +215,7 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                     <Controller
                         name="type"
                         control={control}
+                        rules={{ required: "Тип автомобіля обов'язковий" }}
                         render={({field}) => (
                             <Select
                                 {...field}
@@ -233,6 +265,7 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                     <Controller
                         name="price"
                         control={control}
+                        rules={{ required: "Ціна обов'язкова" }}
                         render={({field}) => (
                             <TextField
                                 {...field}
@@ -249,6 +282,7 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                     <Controller
                         name="vinCode"
                         control={control}
+                        rules={{ required: "ВІН код обов'язковий" }}
                         render={({field}) => (
                             <TextField
                                 {...field}
@@ -275,6 +309,7 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                                 <Controller
                                     name="brandId"
                                     control={control}
+                                    rules={{ required: "Виробник обов'язковий" }}
                                     render={({field}) => (
                                         <Select
                                             {...field}
@@ -302,6 +337,7 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                                 <Controller
                                     name="modelId"
                                     control={control}
+                                    rules={{ required: "Модель обов'язкова" }}
                                     render={({field}) => (
                                         <Select
                                             {...field}
@@ -336,6 +372,7 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                                 <Controller
                                     name="countryId"
                                     control={control}
+                                    rules={{ required: "Країна обов'язкова" }}
                                     render={({field}) => (
                                         <Select
                                             {...field}
@@ -363,6 +400,7 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                                 <Controller
                                     name="locationId"
                                     control={control}
+                                    rules={{ required: "Місто обов'язкове" }}
                                     render={({field}) => (
                                         <Select
                                             {...field}
@@ -405,10 +443,11 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                 <Grid container>
                     <Grid item xs={12}>
                         <Stack spacing={2} direction="row">
-                            <FormControl fullWidth error={errors.year ? true : false} variant="standard">
+                            <FormControl fullWidth error={!!errors.year} variant="standard">
                                 <Controller
                                     name="year"
                                     control={control}
+                                    rules={{ required: "Рік виробництва обов'язковий" }}
                                     render={({field}) => (
                                         <TextField
                                             {...field}
@@ -425,6 +464,7 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                                 <Controller
                                     name="carMileage"
                                     control={control}
+                                    rules={{ required: "Пробіг обов'язковий" }}
                                     render={({field}) => (
                                         <TextField
                                             {...field}
@@ -438,21 +478,41 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                                 {errors.carMileage &&
                                     <FormHelperText id="input-name">{errors.carMileage?.message}</FormHelperText>}
                             </FormControl>
-                            <FormControl fullWidth error={errors.color ? true : false} variant="standard">
+                            <FormControl fullWidth error={!!errors.color} variant="standard">
+                                <InputLabel id="color-select-label">Колір</InputLabel>
                                 <Controller
                                     name="color"
                                     control={control}
-                                    render={({field}) => (
-                                        <TextField
+                                    rules={{ required: "Колір обов'язковий" }}
+                                    render={({ field }) => (
+                                        <Select
                                             {...field}
-                                            value={field.value ? field.value : ""}
-                                            variant="filled"
-                                            fullWidth
+                                            labelId="color-select-label"
+                                            id="color-select"
                                             label="Колір"
-                                        />
+                                            value={field.value}
+                                            onChange={(e) => {
+                                                setValue("color", e.target.value);
+                                            }}
+                                        >
+                                            {colorOptions.map(option => (
+                                                <MenuItem key={option.color} value={option.label}>
+                                                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                        <div style={{
+                                                            backgroundColor: option.color,
+                                                            width: 20,
+                                                            height: 20,
+                                                            marginRight: 10,
+                                                            borderRadius: '50%'
+                                                        }} />
+                                                        {option.label}
+                                                    </div>
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
                                     )}
                                 />
-                                {errors.year && <FormHelperText id="input-name">{errors.year?.message}</FormHelperText>}
+                                {errors.color && <FormHelperText id="input-color">{errors.color?.message}</FormHelperText>}
                             </FormControl>
                         </Stack>
 
@@ -494,7 +554,14 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                     <Controller
                         name="description"
                         control={control}
-                        render={({field}) => (
+                        rules={{
+                            required: "Опис обов'язковий",
+                            maxLength: {
+                                value: 60,
+                                message: "Опис не може містити більше ніж 60 символів"
+                            }
+                        }}
+                        render={({ field }) => (
                             <TextField
                                 {...field}
                                 multiline
@@ -503,21 +570,29 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                                 variant="filled"
                                 fullWidth
                                 label="Опис"
+                                inputProps={{ maxLength: 60 }}
+                                style={{ resize: 'vertical', maxHeight: '200px' }}
+                                helperText={errors.description ? errors.description.message : `${field.value ? field.value.length : 0}/60`}
                             />
                         )}
                     />
-
+                    {errors.description && <FormHelperText id="input-description">{errors.description?.message}</FormHelperText>}
                 </FormControl>
                 {errorMsg && errorMsg.length &&
                     <FormControl fullWidth>
-                        <Alert icon={<CheckIcon fontSize="inherit"/>} severity="error">
+                        <Alert icon={<CheckIcon fontSize="inherit" />} severity="error">
                             {errorMsg}
                         </Alert>
                     </FormControl>
+
                 }
-                <FormControl style={{maxWidth: 200}} variant="standard">
-                    <Button type="submit" variant="outlined">Застосувати</Button>
+
+                <FormControl style={{ maxWidth: 200 }} variant="standard">
+                    <Button type="submit" variant="outlined" disabled={isSubmitting}>
+                        Застосувати
+                    </Button>
                 </FormControl>
+
             </Stack>
         </form>
     )

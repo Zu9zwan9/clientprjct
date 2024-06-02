@@ -5,6 +5,7 @@ export interface Comment extends Entity {
     comment: string;
     auctionId?: string;
     userName?: string;
-    date?: string;
-    time?:string;
+    date?: number;
+    time?: number;
+    timeAgo:string;
 }

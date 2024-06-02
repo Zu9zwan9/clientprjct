@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "hooks/app";
 import { useParams } from "react-router-dom";
-import { sendAuctionRate, setActiveAuction } from "store/slice/auction/AuctionSlice";
+import {
+    checkFollowStatus,
+    followPrice,
+    sendAuctionRate,
+    setActiveAuction,
+    unfollowPrice
+} from "store/slice/auction/AuctionSlice";
 import { getAuctionById } from "store/slice/auction/actions/GetAuctionById";
 import { getAuctionRate } from "store/slice/auction/actions/GetAuctionRate";
 import { GetAuctionComment } from "store/slice/comment/actions/GetAuctionComment";
-import { unwrapResult } from "@reduxjs/toolkit";
 import { setCommentList } from "store/slice/comment/CommentSlice";
 import { AuctionRate } from "models/AuctionRate";
 import { Comment } from "models/Comment";
@@ -33,18 +38,26 @@ import { AuctionStatusEnum } from "types/enums/AuctionStatusEnum";
 import { CarBrand } from "models/CarBrand";
 import { Country } from "models/Country";
 import CommentForm from "components/forms/comment/CommentForm";
+import {useDashboardContext} from "../../../components/template/dasbboard/DashboardContext";
 
 const AuctionPage: React.FC<{}> = () => {
     const { activeAuction, carTypeList, activeRateList, brandList, countryList } = useAppSelector(state => state.auction);
     const { categoryList } = useAppSelector(state => state.category);
     const { commentList } = useAppSelector(state => state.comment);
     const { activeUser } = useAppSelector(state => state.user);
-
+    const {setNotification} = useDashboardContext();
     const [currentRate, setCurrentRate] = useState<number>(0);
     const [currentBrand, setCurrentBrand] = useState<CarBrand>();
     const [currentCountry, setCurrentCountry] = useState<Country>();
     const { id } = useParams();
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const dispatch = useAppDispatch();
+    useEffect(() => {
+        if (id) {
+            dispatch(getAuctionById(id));
+            dispatch(checkFollowStatus(id)); // Додаємо перевірку статусу підписки
+        }
+    }, [id]);
 
     useEffect(() => {
         if (id) dispatch(getAuctionById(id));
@@ -82,24 +95,42 @@ const AuctionPage: React.FC<{}> = () => {
                 auctionId: activeAuction._id,
                 _id: ""
             };
-
             if (currentRate < activeAuction.price) {
-                toast("Ставка дуже низька. Ваша ставка повинна бути не меншою за початкову ціну.");
+                toast("Ставка занизька. Ваша ставка повинна бути не меншою за початкову ціну.");
                 return;
             }
-
+            setIsSubmitting(true);
             if (activeRateList && activeRateList.length) {
                 const minValue = activeRateList[0].value;
                 if (currentRate <= minValue) {
-                    toast("Ставка дуже низька");
+                    toast("Ставка занизька");
                 } else {
                     dispatch(sendAuctionRate(rate));
+                    toast("Ставка зроблена");
                 }
+
             } else {
                 dispatch(sendAuctionRate(rate));
             }
         }
     }
+    const handleFollowClick = () => {
+        if (activeAuction) {
+            dispatch(followPrice(activeAuction._id))
+                .unwrap()
+                .then(() => toast("Ви підписалися на зміни ціни"))
+                .catch((error: any) => toast(error.message));
+        }
+    };
+
+    const handleUnfollowClick = () => {
+        if (activeAuction) {
+            dispatch(unfollowPrice(activeAuction._id))
+                .unwrap()
+                .then(() => toast("Ви відписалися від змін ціни"))
+                .catch((error: any) => toast(error.message));
+        }
+    };
 
     const handleOnCommentCreate = (value: Comment) => {}
 
@@ -119,7 +150,7 @@ const AuctionPage: React.FC<{}> = () => {
                                         image={`${activeAuction.thumbnail}`}
                                         alt="imgauction"
                                     />
-                                    <Box width="100%">
+                                    <Box sx={{ maxWidth: 480, width: '100%' }}>
                                         <Stack flexWrap="wrap" justifyContent="left" direction="column" spacing={1}>
                                             <Chip label={`Назва: ${activeAuction.name}`} icon={<InfoIcon />} />
                                             <Chip label={`Ціна: ${activeAuction.price}$`} icon={<InfoIcon />} />
@@ -141,12 +172,10 @@ const AuctionPage: React.FC<{}> = () => {
                                                 label={`Дата закриття: ${moment.unix(activeAuction.dateClose).format("MMMM Do YYYY, h:mm:ss a")}`}
                                                 icon={<InfoIcon />}
                                             />
-                                            <Chip label={`Опис: ${activeAuction.description}`} icon={<InfoIcon />} />
+                                            <Chip label={`Опис: ${activeAuction.description.length > 100 ? `${activeAuction.description.slice(0, 100)}` : activeAuction.description}`} icon={<InfoIcon />} />
                                             {activeAuction.isCommercial ? <Chip color="info" label={`Комерційне авто`} icon={<InfoIcon />} /> : <></>}
                                         </Stack>
-
-                                        {activeAuction.status == AuctionStatusEnum.ACTIVE
-                                            ?
+                                        {activeAuction.status == AuctionStatusEnum.ACTIVE?
                                             <Stack sx={{ marginTop: 4 }} direction="row">
                                                 <FormControl fullWidth variant="standard">
                                                     <InputLabel htmlFor="standard-adornment-amount">Ставка</InputLabel>
@@ -159,7 +188,7 @@ const AuctionPage: React.FC<{}> = () => {
                                                 </FormControl>
                                                 <Button
                                                     onClick={handleButtonSendClick}
-                                                    disabled={activeUser ? false : true}
+                                                    disabled={!activeUser}
                                                     sx={{ width: 200 }}
                                                     variant="contained"
                                                     endIcon={<SendIcon />}
@@ -169,6 +198,30 @@ const AuctionPage: React.FC<{}> = () => {
                                             </Stack>
                                             : <Alert sx={{ marginTop: 4 }} component={"div"} severity="warning">Аукціон завершений</Alert>
                                         }
+
+                                        <Stack sx={{ marginTop: 4 }} direction="row" spacing={2}>
+                                            <Button
+                                                onClick={handleFollowClick}
+                                                disabled={!activeUser}
+                                                sx={{ width: 200 }}
+                                                variant="contained"
+                                                color="primary"
+                                            >
+                                                Підписатися на зміну ціни
+                                            </Button>
+                                            <Button
+                                                onClick={handleUnfollowClick}
+                                                disabled={!activeUser}
+                                                sx={{ width: 200 }}
+                                                variant="contained"
+                                                color="secondary"
+                                            >
+                                                Відписатися від змін ціни
+                                            </Button>
+                                        </Stack>
+
+
+
                                     </Box>
                                 </Stack>
                             </CardContent>

@@ -30,9 +30,9 @@ const CommentForm: React.FC<CommentFormProps> = (props) => {
     const { activeUser } = useAppSelector(state => state.user);
 
     const onSubmit = async (data: Comment) => {
-        if (isSubmitting) return; // Prevent multiple submissions
+        if (isSubmitting) return;
 
-        setIsSubmitting(true); // Disable the button
+        setIsSubmitting(true);
         try {
             const resultAction = await dispatch(createComment({
                 ...data,
@@ -44,14 +44,14 @@ const CommentForm: React.FC<CommentFormProps> = (props) => {
             if (props.onCreate) {
                 props.onCreate(comment);
             }
-            setSubmittedComments(prev => [comment, ...prev]); // Add the new comment to the list
-            reset({ comment: '' }); // Clear the comment field after submission
+            setSubmittedComments(prev => [comment, ...prev]);
+            reset({ comment: '' });
         } catch (error) {
             if (error instanceof Error) {
                 setErrorMsg(error.message || "An error occurred");
             }
         } finally {
-            setIsSubmitting(false); // Re-enable the button
+            setIsSubmitting(false);
         }
     };
 
@@ -63,7 +63,7 @@ const CommentForm: React.FC<CommentFormProps> = (props) => {
                         <Controller
                             name="comment"
                             control={control}
-                            rules={{ required: 'Напишіть коментар' }} // Validation rule
+                            rules={{ required: 'Напишіть коментар' }}
                             render={({ field }) => (
                                 <TextField
                                     {...field}
@@ -72,8 +72,8 @@ const CommentForm: React.FC<CommentFormProps> = (props) => {
                                     variant="filled"
                                     fullWidth
                                     label="Напишіть коментар"
-                                    error={!!errors.comment} // Show error state
-                                    helperText={errors.comment ? errors.comment.message : ''} // Display error message
+                                    error={!!errors.comment}
+                                    helperText={errors.comment ? errors.comment.message : ''}
                                 />
                             )}
                         />

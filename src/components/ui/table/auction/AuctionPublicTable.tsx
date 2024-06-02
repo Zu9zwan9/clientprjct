@@ -23,7 +23,7 @@ export interface AuctionPublicTableProps {
 }
 
 const AuctionPublicTable: React.FC<AuctionPublicTableProps> = (props) => {
-    const { carTypeList, brandList } = useAppSelector(state => state.auction);
+    const { carTypeList, brandList, countryList } = useAppSelector(state => state.auction);
     const navigate = useNavigate();
 
     function getCarCaption(item: Auction) {
@@ -38,10 +38,22 @@ const AuctionPublicTable: React.FC<AuctionPublicTableProps> = (props) => {
         }
         return caption;
     }
+    function getCountryLocation(item: Auction) {
+        const country = countryList.find((_item: { _id: string | undefined; }) => _item._id === item.countryId);
+        let location = "";
+        if (country) {
+            location = location.concat(country.name);
+            const city = country.locationList?.find((_item: { _id: string | undefined; }) => _item._id === item.locationId);
+            if (city) {
+                location = location.concat(" / ").concat(city.name);
+            }
+        }
 
+        return location;
+    }
     function getLatestBid(auctionId: string) {
         const bid = props.latestBids[auctionId];
-        return bid ? `${bid.value} $` : "Ставки поки що відсутні";
+        return bid ? `${bid.value} $` : "Ставки відсутні";
     }
 
     return (
@@ -55,17 +67,15 @@ const AuctionPublicTable: React.FC<AuctionPublicTableProps> = (props) => {
                                     <img style={{ height: 200, width: '100%', objectFit: 'cover' }} src={`${row.thumbnail}`} />
                                 )}
                                 <CardContent>
-                                    <Typography variant="h5" component="div">
-                                        {row.name}
+                                    <Typography variant="h6" color={"primary"} component="div"
+                                                style={{ textTransform: 'uppercase' }}
+                                    >{row.name}
                                     </Typography>
                                     <Typography variant="body2" color="textSecondary">
                                         Виробник/Модель:  {getCarCaption(row)}
                                     </Typography>
                                     <Typography variant="body2" color="textSecondary">
-                                        Дата Закриття: {moment.unix(row.dateClose).format('MM Do YYYY, h:mm:ss ')}
-                                    </Typography>
-                                    <Typography variant="body2" color="textSecondary">
-                                        Стартова ціна: {row.price} $
+                                        Тип кузова: {carTypeList.find(item => item.id === row.type)?.name}
                                     </Typography>
                                     <Typography variant="body2" color="textSecondary">
                                         Рік: {row.year}
@@ -74,16 +84,21 @@ const AuctionPublicTable: React.FC<AuctionPublicTableProps> = (props) => {
                                         Пробіг: {row.carMileage} км
                                     </Typography>
                                     <Typography variant="body2" color="textSecondary">
-                                        Тип кузова: {carTypeList.find(item => item.id === row.type)?.name}
+                                        Країна/Місто: {getCountryLocation(row)}
+                                    </Typography>
+                                    <Typography variant="body2" color="textSecondary">
+                                        Стартова ціна: {row.price} $
                                     </Typography>
                                     <Typography variant="body2" color="textSecondary">
                                         Остання ставка: {getLatestBid(row._id)}
                                     </Typography>
+                                    <Typography variant="body2" color="textSecondary">
+                                        Дата Закриття: {moment.unix(row.dateClose).format('MM Do YYYY, h:mm:ss ')}
+                                    </Typography>
                                     <Chip
                                         label={row.status === AuctionStatusEnum.ACTIVE ? "Активний" : "Завершений"}
                                         color={row.status === AuctionStatusEnum.ACTIVE ? "success" : "primary"}
-                                        variant="outlined"
-                                    />
+                                        variant="outlined"/>
                                 </CardContent>
                                 <CardActions>
                                     <Button onClick={() => navigate(`/auction/${row._id}`)}>
