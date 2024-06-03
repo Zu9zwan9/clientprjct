@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import FormControl from '@mui/material/FormControl';
 import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
@@ -17,7 +17,7 @@ import IconButton from "@mui/material/IconButton";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 
 const RegistrationForm: React.FC = () => {
-    const {register, handleSubmit, watch, formState: {errors}} = useForm<User>();
+    const {register, handleSubmit, watch, formState: {errors, isValid}} = useForm<User>({mode: "onChange"});
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -28,7 +28,6 @@ const RegistrationForm: React.FC = () => {
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleClickShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
     const handleMouseDownConfirmPassword = (event: { preventDefault: () => any; }) => event.preventDefault();
-
 
     const handleMouseDownPassword = (event: { preventDefault: () => any; }) => event.preventDefault();
 
@@ -47,12 +46,21 @@ const RegistrationForm: React.FC = () => {
             <Stack spacing={2}>
                 <FormControl fullWidth error={!!errors.name}>
                     <InputLabel htmlFor="input-name">Ім'я</InputLabel>
-                    <Input id="input-name" {...register('name', {required: "Обов'язкове поле"})} />
+                    <Input id="input-name" {...register('name', { required: "Обов'язкове поле" })} />
                     {errors.name?.message && <FormHelperText>{errors.name.message}</FormHelperText>}
                 </FormControl>
                 <FormControl fullWidth error={!!errors.email}>
                     <InputLabel htmlFor="input-email">Email</InputLabel>
-                    <Input id="input-email" {...register('email', {required: "Обов'язкове поле"})} />
+                    <Input
+                        id="input-email"
+                        {...register('email', {
+                            required: "Обов'язкове поле",
+                            pattern: {
+                                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                                message: "Невірний формат електронної пошти"
+                            }
+                        })}
+                    />
                     {errors.email?.message && <FormHelperText>{errors.email.message}</FormHelperText>}
                 </FormControl>
                 <FormControl fullWidth error={!!errors.password}>
@@ -63,8 +71,12 @@ const RegistrationForm: React.FC = () => {
                         {...register('password', {
                             required: "Обов'язкове поле",
                             minLength: {
-                                value: 6,
-                                message: "Має містити мінімум 6 символів"
+                                value: 8,
+                                message: "Має містити мінімум 8 символів"
+                            },
+                            pattern: {
+                                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                                message: "Пароль має містити принаймні одну літеру в нижньому та верхньому регістрі, щонайменше один спеціальний символ та одну цифру"
                             }
                         })}
                         endAdornment={
@@ -74,7 +86,7 @@ const RegistrationForm: React.FC = () => {
                                     onClick={handleClickShowPassword}
                                     onMouseDown={handleMouseDownPassword}
                                 >
-                                    {showPassword ? <VisibilityOff/> : <Visibility/>}
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
                                 </IconButton>
                             </InputAdornment>
                         }
@@ -92,20 +104,18 @@ const RegistrationForm: React.FC = () => {
                         endAdornment={
                             <InputAdornment position="end">
                                 <IconButton
-                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                    onMouseDown={(event) => event.preventDefault()}
+                                    onClick={handleClickShowConfirmPassword}
+                                    onMouseDown={handleMouseDownConfirmPassword}
                                 >
-                                    {showConfirmPassword ? <VisibilityOff/> : <Visibility/>}
+                                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                                 </IconButton>
                             </InputAdornment>
                         }
-
                     />
-                    {errors.confirmPassword?.message &&
-                        <FormHelperText>{errors.confirmPassword.message}</FormHelperText>}
+                    {errors.confirmPassword?.message && <FormHelperText>{errors.confirmPassword.message}</FormHelperText>}
                 </FormControl>
                 {errorMsg && <Alert severity="error">{errorMsg}</Alert>}
-                <Button type="submit" variant="outlined">Зареєструватись</Button>
+                <Button type="submit" variant="outlined" disabled={!isValid}>Зареєструватись</Button>
             </Stack>
         </form>
     );

@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "hooks/app";
 import {useParams} from "react-router-dom";
-import {followPrice, sendAuctionRate, setActiveAuction, unfollowPrice} from "store/slice/auction/AuctionSlice";
+import { sendAuctionRate, setActiveAuction} from "store/slice/auction/AuctionSlice";
+import {unfollowPrice, followPrice} from "store/slice/auction/actions/FollowPrice";
 import {getAuctionById} from "store/slice/auction/actions/GetAuctionById";
 import {getAuctionRate} from "store/slice/auction/actions/GetAuctionRate";
 import {GetAuctionComment} from "store/slice/comment/actions/GetAuctionComment";
@@ -74,7 +75,22 @@ const AuctionPage: React.FC<{}> = () => {
             setCurrentRate(activeRateList[0].value);
         }
     }, [activeRateList]);
-
+    const handleFollowClick = () => {
+        if (activeAuction && activeUser) {
+            dispatch(followPrice({ auctionId: activeAuction._id, userId: activeUser._id }))
+                .unwrap()
+                .then(() => toast("Ви підписалися на зміни ціни"))
+                .catch((error: any) => toast(error.message));
+        }
+    };
+    const handleUnfollowClick = () => {
+        if (activeAuction && activeUser) {
+            dispatch(unfollowPrice({ auctionId: activeAuction._id, userId: activeUser._id }))
+                .unwrap()
+                .then(() => toast("Ви відписалися від змін ціни"))
+                .catch((error: any) => toast(error.message));
+        }
+    };
     const handleButtonSendClick = () => {
         if (activeUser && currentRate && activeAuction) {
             let rate: AuctionRate = {
@@ -104,23 +120,7 @@ const AuctionPage: React.FC<{}> = () => {
         }
     }
 
-    const handleFollowClick = () => {
-        if (activeAuction) {
-            dispatch(followPrice(activeAuction._id))
-                .unwrap()
-                .then(() => toast("Ви підписалися на зміни ціни"))
-                .catch((error: any) => toast(error.message));
-        }
-    };
 
-    const handleUnfollowClick = () => {
-        if (activeAuction) {
-            dispatch(unfollowPrice(activeAuction._id))
-                .unwrap()
-                .then(() => toast("Ви відписалися від змін ціни"))
-                .catch((error: any) => toast(error.message));
-        }
-    };
 
     const handleOnCommentCreate = (value: Comment) => {
     }
