@@ -18,7 +18,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from "@mui/material/IconButton";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
-import {Simulate} from "react-dom/test-utils";
 import {useThemeContext} from "../themeContext";
 
 const DashboardLayout: React.FC<{}> = () => {

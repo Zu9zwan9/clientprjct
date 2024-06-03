@@ -10,7 +10,6 @@ import Stack from '@mui/material/Stack';
 import {useAppDispatch} from "hooks/app";
 import {registerUser} from "store/slice/user/actions/RegisterUser";
 import Alert from '@mui/material/Alert';
-import CheckIcon from '@mui/icons-material/Check';
 import {unwrapResult} from '@reduxjs/toolkit';
 import {useNavigate} from "react-router-dom";
 import {InputAdornment} from "@mui/material";
@@ -96,7 +95,7 @@ const RegistrationForm: React.FC = () => {
                                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                     onMouseDown={(event) => event.preventDefault()}
                                 >
-                                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                    {showConfirmPassword ? <VisibilityOff/> : <Visibility/>}
                                 </IconButton>
                             </InputAdornment>
                         }

@@ -17,7 +17,7 @@ const UserProfile: React.FC<{}> = () => {
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-    const { activeUser } = useAppSelector(state => state.user);
+    const {activeUser} = useAppSelector(state => state.user);
 
     const navigate = useNavigate();
 
@@ -44,7 +44,7 @@ const UserProfile: React.FC<{}> = () => {
                 onClick={handleMenu}
                 color="inherit"
             >
-                <Avatar alt={activeUser?.name || 'User'} src={`${activeUser?.thumbnail_file}`} />
+                <Avatar alt={activeUser?.name || 'User'} src={`${activeUser?.thumbnail_file}`}/>
             </IconButton>
             <Menu
                 id="menu-appbar"

@@ -1,42 +1,43 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import FormHelperText from '@mui/material/FormHelperText';
-import {Controller, useForm} from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-import {useAppDispatch, useAppSelector} from "hooks/app";
+import { useAppDispatch, useAppSelector } from "hooks/app";
 import Alert from '@mui/material/Alert';
 import CheckIcon from '@mui/icons-material/Check';
-import {unwrapResult} from '@reduxjs/toolkit';
-import {useNavigate} from "react-router-dom";
+import { unwrapResult } from '@reduxjs/toolkit';
+import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
-import {useDashboardContext} from "components/template/dasbboard/DashboardContext";
-import {FormObjectProps} from "../FormProps";
-import {Auction} from "models/Auction";
+import { useDashboardContext } from "components/template/dasbboard/DashboardContext";
+import { FormObjectProps } from "../FormProps";
+import { Auction } from "models/Auction";
 import Grid from "@mui/material/Grid";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import {CarModel} from "models/CarModel";
+import { CarModel } from "models/CarModel";
 import getBase64Image from "hooks/useBase64Image";
-import {MuiFileInput} from 'mui-file-input'
-import {createAuction} from "store/slice/auction/actions/CreateAuction";
-import {DemoContainer, DemoItem} from '@mui/x-date-pickers/internals/demo';
-import {DateTimePicker} from '@mui/x-date-pickers/DateTimePicker';
-import {editAuction} from "store/slice/auction/actions/EditAuction";
-import moment, {Moment} from "moment";
+import { MuiFileInput } from 'mui-file-input';
+import { createAuction } from "store/slice/auction/actions/CreateAuction";
+import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { editAuction } from "store/slice/auction/actions/EditAuction";
+import moment, { Moment } from "moment";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import {getCarBrandList} from "store/slice/auction/actions/GetCarBrands";
-import {getCountryList} from "store/slice/auction/actions/GetCountries";
-import {Location} from "models/Location"
+import { getCarBrandList } from "store/slice/auction/actions/GetCarBrands";
+import { getCountryList } from "store/slice/auction/actions/GetCountries";
+import { Location } from "models/Location";
+
 const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
-    const {brandList, carTypeList, countryList} = useAppSelector(state => state.auction);
-    const {categoryList} = useAppSelector(state => state.category);
+    const { brandList, carTypeList, countryList } = useAppSelector(state => state.auction);
+    const { categoryList } = useAppSelector(state => state.category);
     const [modelList, setModelList] = useState<CarModel[]>([]);
     const [locationList, setLocationList] = useState<Location[]>([]);
-    const [thumbnail, setThumbnail] = useState<any>();
-    const [valueDatePicker, setValueDatePicker] = useState<Moment>();
+    const [thumbnail, setThumbnail] = useState<any>(null);
+    const [valueDatePicker, setValueDatePicker] = useState<Moment | null>(null);
 
     const {
         register,
@@ -45,14 +46,15 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
         watch,
         setValue,
         control,
-        formState: {errors}
+        formState: { errors }
     } = useForm<Auction>({
         mode: 'all',
         shouldUnregister: false,
     });
+
     const watchBrand = watch('brandId');
     const watchCountry = watch('countryId');
-    const {setNotification} = useDashboardContext();
+    const { setNotification } = useDashboardContext();
     const [errorMsg, setErrorMsg] = useState<string>();
     const navigate = useNavigate();
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -81,27 +83,27 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
         { color: "#f5f5dc", label: "Блідо-золотий" },
         { color: "#f5f5f5", label: "Блідо-сірий" },
         { color: "#f5fffa", label: "М'ятний" },
-];
+    ];
     let dispatch = useAppDispatch();
 
     function onSubmit(data: Auction) {
         setIsSubmitting(true);
         if (!data.dateClose || data.dateClose < moment().unix()) {
-            setNotification( "Неможливо створити аукціон минулою датою або без дати закриття");
+            setNotification("Неможливо створити аукціон минулою датою або без дати закриття");
             setIsSubmitting(false);
             return;
         }
-        data.brandId =  data.brandId ? data.brandId : "";
-        data.modelId =  data.modelId ? data.modelId : "";
-        data.countryId =  data.countryId ? data.countryId : "";
-        data.locationId =  data.locationId ? data.locationId : "";
+        data.brandId = data.brandId ? data.brandId : "";
+        data.modelId = data.modelId ? data.modelId : "";
+        data.countryId = data.countryId ? data.countryId : "";
+        data.locationId = data.locationId ? data.locationId : "";
 
         dispatch(data._id ? editAuction(data) : createAuction(data))
             .then(unwrapResult)
             .then((result) => {
                 setNotification("Запит успішно виконаний");
                 setTimeout(() => {
-                navigate('/');
+                    navigate('/');
                 }, 2000);
             }).catch(error => {
             setErrorMsg(error);
@@ -126,45 +128,41 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
     useEffect(() => {
         console.log("handleOnCarBrandChange", watchBrand);
         setValue("modelId", undefined);
-        let brand = brandList.find(item => item._id == watchBrand);
+        let brand = brandList.find(item => item._id === watchBrand);
         if (brand) setModelList(brand.modelList);
-    }, [watchBrand])
+    }, [watchBrand, brandList, setValue]);
 
     useEffect(() => {
         console.log("handleOnCountryChange", watchCountry);
         setValue("locationId", undefined);
-        let country = countryList.find(item => item._id == watchCountry);
+        let country = countryList.find(item => item._id === watchCountry);
         if (country) setLocationList(country.locationList);
-    }, [watchCountry])
+    }, [watchCountry, countryList, setValue]);
 
     useEffect(() => {
-
         if (props.object) {
             Object.entries(props.object).forEach(
-                ([name, value]: any) => setValue(name, value));
+                ([name, value]: any) => setValue(name, value)
+            );
 
-            let brand = brandList.find(item => item._id == props.object?.brandId);
+            let brand = brandList.find(item => item._id === props.object?.brandId);
             if (brand) setModelList(brand.modelList);
 
-            let country = countryList.find(item => item._id == props.object?.countryId);
+            let country = countryList.find(item => item._id === props.object?.countryId);
             if (country) setLocationList(country.locationList);
 
             setValueDatePicker(moment.unix(props.object.dateClose));
             setThumbnail(`${props.object.thumbnail}`);
-
         }
-    }, [props.object])
+    }, [props.object, brandList, countryList, setValue]);
 
     useEffect(() => {
         props.object && setValue("modelId", props.object.modelId);
-
-    }, [modelList]);
+    }, [modelList, props.object, setValue]);
 
     useEffect(() => {
         props.object && setValue("locationId", props.object.locationId);
-
-    }, [locationList]);
-
+    }, [locationList, props.object, setValue]);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
@@ -174,10 +172,10 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                         name="name"
                         control={control}
                         rules={{ required: "Категорія обов'язкова" }}
-                        render={({field}) => (
+                        render={({ field }) => (
                             <TextField
                                 {...field}
-                                value={field.value ? field.value : ""}
+                                value={field.value || ""}
                                 variant="filled"
                                 fullWidth
                                 label="Назва"
@@ -192,19 +190,17 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                         name="categoryId"
                         control={control}
                         rules={{ required: "Категорія обов'язкова" }}
-                        render={({field}) => (
+                        render={({ field }) => (
                             <Select
                                 {...field}
                                 labelId="category-select-standard-label"
                                 id="category-select-standard"
-                                value={field.value ? field.value : ""}
+                                value={field.value || ""}
                                 variant="filled"
                                 fullWidth
                                 label="Категорія"
-
                             >
-                                {categoryList.map(item => <MenuItem key={item._id}
-                                                                    value={item._id}>{item.name}</MenuItem>)}
+                                {categoryList.map(item => <MenuItem key={item._id} value={item._id}>{item.name}</MenuItem>)}
                             </Select>
                         )}
                     />
@@ -216,60 +212,45 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                         name="type"
                         control={control}
                         rules={{ required: "Тип автомобіля обов'язковий" }}
-                        render={({field}) => (
+                        render={({ field }) => (
                             <Select
                                 {...field}
                                 labelId="type-select-standard-label"
                                 label="Тип кузова"
                                 id="category-select-standard"
-                                value={field.value ? field.value : ""}
+                                value={field.value || ""}
                                 variant="filled"
                                 fullWidth
-
                             >
-                                {carTypeList.map(item => <MenuItem key={item._id}
-                                                                   value={item._id}>{item.name}</MenuItem>)}
+                                {carTypeList.map(item => <MenuItem key={item._id} value={item._id}>{item.name}</MenuItem>)}
                             </Select>
                         )}
                     />
                     {errors.type && <FormHelperText id="input-name">{errors.type?.message}</FormHelperText>}
                 </FormControl>
                 <FormControl fullWidth variant="filled">
-                    <DemoContainer
-                        components={[
-                            'DateTimePicker',
-                        ]}
-                    >
-                        <DemoItem
-                            label={"Дата закриття аукціону"}
-                        >
-
+                    <DemoContainer components={['DateTimePicker']}>
+                        <DemoItem label={"Дата закриття аукціону"}>
                             <DateTimePicker
                                 value={valueDatePicker || null}
                                 defaultValue={props.object?.dateClose ? moment.unix(props.object.dateClose) : null}
                                 disablePast
-                                //renderInput={(params) => <TextField {...params} />}
                                 onChange={(value) => {
-                                    //console.log(value?.unix());
                                     value && setValue("dateClose", value.unix())
                                 }}
-
                             />
                         </DemoItem>
                     </DemoContainer>
-
                 </FormControl>
-
-
                 <FormControl fullWidth error={!!errors.price} variant="standard">
                     <Controller
                         name="price"
                         control={control}
                         rules={{ required: "Ціна обов'язкова" }}
-                        render={({field}) => (
+                        render={({ field }) => (
                             <TextField
                                 {...field}
-                                value={field.value ? field.value : ""}
+                                value={field.value || ""}
                                 variant="filled"
                                 fullWidth
                                 label="Ціна"
@@ -283,10 +264,10 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                         name="vinCode"
                         control={control}
                         rules={{ required: "ВІН код обов'язковий" }}
-                        render={({field}) => (
+                        render={({ field }) => (
                             <TextField
                                 {...field}
-                                value={field.value ? field.value : ""}
+                                value={field.value || ""}
                                 variant="filled"
                                 fullWidth
                                 label="ВІН код"
@@ -295,133 +276,113 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                     />
                     {errors.vinCode && <FormHelperText id="input-name">{errors.vinCode?.message}</FormHelperText>}
                 </FormControl>
-
-
                 <Grid container>
-
                     <Grid item xs={12}>
                         <Stack direction="row" spacing={2}>
                             <FormControl fullWidth error={errors.brandId ? true : false} variant="standard">
-                                <DemoItem
-                                    label={"Виробник"}
-                                >
+                                <DemoItem label={"Виробник"}>
+                                    {/* The children prop here */}
+                                    <Controller
+                                        name="brandId"
+                                        control={control}
+                                        rules={{ required: "Виробник обов'язковий" }}
+                                        render={({ field }) => (
+                                            <Select
+                                                {...field}
+                                                labelId="car-brand-select-standard-label"
+                                                id="car-brand-select-standard"
+                                                value={field.value || ""}
+                                                variant="filled"
+                                                fullWidth
+                                                label="Виробник"
+                                            >
+                                                {brandList.map(item => <MenuItem key={item._id} value={item._id}>{item.name}</MenuItem>)}
+                                            </Select>
+                                        )}
+                                    />
                                 </DemoItem>
-                                <Controller
-                                    name="brandId"
-                                    control={control}
-                                    rules={{ required: "Виробник обов'язковий" }}
-                                    render={({field}) => (
-                                        <Select
-                                            {...field}
-                                            labelId="car-brand-select-standard-label"
-                                            id="car-brand-select-standard"
-                                            value={field.value ? field.value : ""}
-                                            variant="filled"
-                                            fullWidth
-                                            label="Виробник"
-                                        >
-                                            {brandList.map(item => <MenuItem key={item._id}
-                                                                             value={item._id}>{item.name}</MenuItem>)}
-                                        </Select>
-                                    )}
-                                />
-                                {errors.brandId &&
-                                    <FormHelperText id="input-name">{errors.brandId?.message}</FormHelperText>}
-
+                                {errors.brandId && <FormHelperText id="input-name">{errors.brandId?.message}</FormHelperText>}
                             </FormControl>
                             <FormControl fullWidth error={errors.modelId ? true : false} variant="standard">
-                                <DemoItem
-                                    label={"Модель"}
-                                >
+                                <DemoItem label={"Модель"}>
+                                    {/* The children prop here */}
+                                    <Controller
+                                        name="modelId"
+                                        control={control}
+                                        rules={{ required: "Модель обов'язкова" }}
+                                        render={({ field }) => (
+                                            <Select
+                                                {...field}
+                                                labelId="car-brand-select-standard-label"
+                                                id="car-brand-select-standard"
+                                                value={field.value || ""}
+                                                variant="filled"
+                                                fullWidth
+                                                label="Модель"
+                                            >
+                                                {modelList?.map(item => <MenuItem key={item._id} value={item._id}>{item.name}</MenuItem>)}
+                                            </Select>
+                                        )}
+                                    />
                                 </DemoItem>
-                                <Controller
-                                    name="modelId"
-                                    control={control}
-                                    rules={{ required: "Модель обов'язкова" }}
-                                    render={({field}) => (
-                                        <Select
-                                            {...field}
-                                            labelId="car-brand-select-standard-label"
-                                            id="car-brand-select-standard"
-                                            value={field.value ? field.value : ""}
-                                            variant="filled"
-                                            fullWidth
-                                            label="Модель"
-                                        >
-                                            {modelList?.map(item => <MenuItem key={item._id}
-                                                                              value={item._id}>{item.name}</MenuItem>)}
-                                        </Select>
-                                    )}
-                                />
-                                {errors.modelId &&
-                                    <FormHelperText id="input-name">{errors.modelId?.message}</FormHelperText>}
+                                {errors.modelId && <FormHelperText id="input-name">{errors.modelId?.message}</FormHelperText>}
                             </FormControl>
                         </Stack>
                     </Grid>
-
                 </Grid>
                 <Grid container>
-
                     <Grid item xs={12}>
                         <Stack direction="row" spacing={2}>
                             <FormControl fullWidth error={errors.countryId ? true : false} variant="standard">
-                                <DemoItem
-                                    label={"Країна"}
-                                >
+                                <DemoItem label={"Країна"}>
+                                    {/* The children prop here */}
+                                    <Controller
+                                        name="countryId"
+                                        control={control}
+                                        rules={{ required: "Країна обов'язкова" }}
+                                        render={({ field }) => (
+                                            <Select
+                                                {...field}
+                                                labelId="country-select-standard-label"
+                                                id="country-select-standard"
+                                                value={field.value || ""}
+                                                variant="filled"
+                                                fullWidth
+                                                label="Країна"
+                                            >
+                                                {countryList.map(item => <MenuItem key={item._id} value={item._id}>{item.name}</MenuItem>)}
+                                            </Select>
+                                        )}
+                                    />
                                 </DemoItem>
-                                <Controller
-                                    name="countryId"
-                                    control={control}
-                                    rules={{ required: "Країна обов'язкова" }}
-                                    render={({field}) => (
-                                        <Select
-                                            {...field}
-                                            labelId="country-select-standard-label"
-                                            id="country-select-standard"
-                                            value={field.value ? field.value : ""}
-                                            variant="filled"
-                                            fullWidth
-                                            label="Країна"
-                                        >
-                                            {countryList.map(item => <MenuItem key={item._id}
-                                                                             value={item._id}>{item.name}</MenuItem>)}
-                                        </Select>
-                                    )}
-                                />
-                                {errors.countryId &&
-                                    <FormHelperText id="input-name">{errors.countryId?.message}</FormHelperText>}
-
+                                {errors.countryId && <FormHelperText id="input-name">{errors.countryId?.message}</FormHelperText>}
                             </FormControl>
                             <FormControl fullWidth error={errors.locationId ? true : false} variant="standard">
-                                <DemoItem
-                                    label={"Місто"}
-                                >
+                                <DemoItem label={"Місто"}>
+                                    {/* The children prop here */}
+                                    <Controller
+                                        name="locationId"
+                                        control={control}
+                                        rules={{ required: "Місто обов'язкове" }}
+                                        render={({ field }) => (
+                                            <Select
+                                                {...field}
+                                                labelId="location-select-standard-label"
+                                                id="location-select-standard"
+                                                value={field.value || ""}
+                                                variant="filled"
+                                                fullWidth
+                                                label="Місто"
+                                            >
+                                                {locationList?.map(item => <MenuItem key={item._id} value={item._id}>{item.name}</MenuItem>)}
+                                            </Select>
+                                        )}
+                                    />
                                 </DemoItem>
-                                <Controller
-                                    name="locationId"
-                                    control={control}
-                                    rules={{ required: "Місто обов'язкове" }}
-                                    render={({field}) => (
-                                        <Select
-                                            {...field}
-                                            labelId="location-select-standard-label"
-                                            id="location-select-standard"
-                                            value={field.value ? field.value : ""}
-                                            variant="filled"
-                                            fullWidth
-                                            label="Місто"
-                                        >
-                                            {locationList?.map(item => <MenuItem key={item._id}
-                                                                              value={item._id}>{item.name}</MenuItem>)}
-                                        </Select>
-                                    )}
-                                />
-                                {errors.locationId &&
-                                    <FormHelperText id="input-name">{errors.locationId?.message}</FormHelperText>}
+                                {errors.locationId && <FormHelperText id="input-name">{errors.locationId?.message}</FormHelperText>}
                             </FormControl>
                         </Stack>
                     </Grid>
-
                 </Grid>
                 <Grid container>
                     <Grid item xs={6}>
@@ -429,17 +390,14 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                             <MuiFileInput
                                 value={thumbnail}
                                 label="Оберіть файл для обкладинки"
-
                                 onChange={handleThumbnailChange}
                             />
                         </FormControl>
-
                     </Grid>
                     <Grid item xs={6}>
-                        {thumbnail && <img src={thumbnail} style={{height: 150}} className=""/>}
+                        {thumbnail && <img src={thumbnail} style={{ height: 150 }} alt="thumbnail" />}
                     </Grid>
                 </Grid>
-
                 <Grid container>
                     <Grid item xs={12}>
                         <Stack spacing={2} direction="row">
@@ -448,10 +406,10 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                                     name="year"
                                     control={control}
                                     rules={{ required: "Рік виробництва обов'язковий" }}
-                                    render={({field}) => (
+                                    render={({ field }) => (
                                         <TextField
                                             {...field}
-                                            value={field.value ? field.value : ""}
+                                            value={field.value || ""}
                                             variant="filled"
                                             fullWidth
                                             label="Рік виробництва"
@@ -465,18 +423,17 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                                     name="carMileage"
                                     control={control}
                                     rules={{ required: "Пробіг обов'язковий" }}
-                                    render={({field}) => (
+                                    render={({ field }) => (
                                         <TextField
                                             {...field}
-                                            value={field.value ? field.value : ""}
+                                            value={field.value || ""}
                                             variant="filled"
                                             fullWidth
                                             label="Пробіг"
                                         />
                                     )}
                                 />
-                                {errors.carMileage &&
-                                    <FormHelperText id="input-name">{errors.carMileage?.message}</FormHelperText>}
+                                {errors.carMileage && <FormHelperText id="input-name">{errors.carMileage?.message}</FormHelperText>}
                             </FormControl>
                             <FormControl fullWidth error={!!errors.color} variant="standard">
                                 <InputLabel id="color-select-label">Колір</InputLabel>
@@ -490,10 +447,8 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                                             labelId="color-select-label"
                                             id="color-select"
                                             label="Колір"
-                                            value={field.value}
-                                            onChange={(e) => {
-                                                setValue("color", e.target.value);
-                                            }}
+                                            value={field.value || ""}
+                                            onChange={(e) => setValue("color", e.target.value)}
                                         >
                                             {colorOptions.map(option => (
                                                 <MenuItem key={option.color} value={option.label}>
@@ -515,12 +470,8 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                                 {errors.color && <FormHelperText id="input-color">{errors.color?.message}</FormHelperText>}
                             </FormControl>
                         </Stack>
-
                     </Grid>
-
-
                 </Grid>
-
                 <FormControl error={errors.description ? true : false} variant="standard">
                     <FormControlLabel
                         control={
@@ -528,28 +479,19 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                                 name="isCommercial"
                                 control={control}
                                 defaultValue={props.object?.isCommercial}
-                                render={({field}) => (
+                                render={({ field }) => (
                                     <Checkbox
                                         {...field}
-                                        //defaultChecked={props.object?.isCommercial || false}
-                                        value={field.value}
+                                        value={field.value || false}
                                         checked={!!field.value}
-                                        onChange={(e) => {
-                                            // console.log("ff",field);
-                                            // console.log(e.target.checked)
-                                            field.onChange(e.target.checked)
-                                        }}
+                                        onChange={(e) => field.onChange(e.target.checked)}
                                     />
                                 )}
                             />
                         }
-                        label="Комерційне автор"
+                        label="Комерційне авто"
                     />
-
-
                 </FormControl>
-
-
                 <FormControl fullWidth error={errors.description ? true : false} variant="standard">
                     <Controller
                         name="description"
@@ -566,36 +508,32 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                                 {...field}
                                 multiline
                                 rows={4}
-                                value={field.value ? field.value : ""}
+                                value={field.value || ""}
                                 variant="filled"
                                 fullWidth
                                 label="Опис"
                                 inputProps={{ maxLength: 60 }}
-                                style={{ resize: 'vertical', maxHeight: '200px' }}
-                                helperText={errors.description ? errors.description.message : `${field.value ? field.value.length : 0}/60`}
+                                helperText={errors.description ? errors.description.message : `${field.value?.length || 0}/60`}
                             />
                         )}
                     />
                     {errors.description && <FormHelperText id="input-description">{errors.description?.message}</FormHelperText>}
                 </FormControl>
-                {errorMsg && errorMsg.length &&
+                {errorMsg && (
                     <FormControl fullWidth>
                         <Alert icon={<CheckIcon fontSize="inherit" />} severity="error">
                             {errorMsg}
                         </Alert>
                     </FormControl>
-
-                }
-
+                )}
                 <FormControl style={{ maxWidth: 200 }} variant="standard">
                     <Button type="submit" variant="outlined" disabled={isSubmitting}>
                         Застосувати
                     </Button>
                 </FormControl>
-
             </Stack>
         </form>
-    )
+    );
 }
 
 export default AuctionForm;

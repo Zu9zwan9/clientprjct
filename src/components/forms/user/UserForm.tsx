@@ -18,10 +18,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import {Role} from "types/enums/RoleEnum";
 import {setActiveUser} from "store/slice/user/UserSlice";
-import { Grid } from "@mui/material";
-import { MuiFileInput } from "mui-file-input";
 import getBase64Image from "hooks/useBase64Image";
-import Input from "@mui/material/Input";
 
 
 const UserForm: React.FC<FormObjectProps<User>> = (props) => {

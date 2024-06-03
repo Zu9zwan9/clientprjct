@@ -1,12 +1,12 @@
 import axios from "axios";
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { BASE_URL } from "store/config";
+import {createAsyncThunk} from "@reduxjs/toolkit";
+import {BASE_URL} from "store/config";
 
 export const getCountryList = createAsyncThunk(
     'car/countries',
-    async (_, { rejectWithValue }) => {
+    async (_, {rejectWithValue}) => {
         try {
-            const { data } = await axios.get(`${BASE_URL}/api/country/list`);
+            const {data} = await axios.get(`${BASE_URL}/api/country/list`);
             return data;
         } catch (error: any) {
             if (error.response && error.response.data.message) {

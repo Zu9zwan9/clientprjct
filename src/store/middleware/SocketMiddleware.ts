@@ -1,11 +1,11 @@
-import { isAsyncThunkAction, Middleware } from "@reduxjs/toolkit";
-import { Auction } from "models/Auction";
-import { io, Socket } from "socket.io-client";
-import { closeActiveAuction, receiveAuctionRate, sendAuctionRate } from "store/slice/auction/AuctionSlice";
-import { receiveComment } from "store/slice/comment/CommentSlice";
-import { wsConnect, wsDisconnect, wsInit } from "store/slice/socket/SocketSlice";
-import { setActiveUser } from "store/slice/user/UserSlice";
-import { BASE_URL } from '../config';
+import {isAsyncThunkAction, Middleware} from "@reduxjs/toolkit";
+import {Auction} from "models/Auction";
+import {io, Socket} from "socket.io-client";
+import {closeActiveAuction, receiveAuctionRate, sendAuctionRate} from "store/slice/auction/AuctionSlice";
+import {receiveComment} from "store/slice/comment/CommentSlice";
+import {wsConnect, wsDisconnect, wsInit} from "store/slice/socket/SocketSlice";
+import {setActiveUser} from "store/slice/user/UserSlice";
+import {BASE_URL} from '../config';
 
 let socket: Socket;
 
@@ -13,7 +13,7 @@ const socketMiddleware: Middleware = store => next => action => {
     const response = next(action);
 
     if (wsInit.match(action)) {
-        socket = io(`${BASE_URL}`, { transports: ["websocket"] });
+        socket = io(`${BASE_URL}`, {transports: ["websocket"]});
 
         socket.on("connect", () => {
             store.dispatch(wsConnect());
@@ -64,9 +64,9 @@ const socketMiddleware: Middleware = store => next => action => {
 
         console.log("join_room emit", action.payload);
 
-        const state =  store.getState();
+        const state = store.getState();
 
-        console.log("activeUser",state.user.activeUser);
+        console.log("activeUser", state.user.activeUser);
 
         if (action.payload)
 
@@ -76,7 +76,7 @@ const socketMiddleware: Middleware = store => next => action => {
                 socket.emit("join_room", [((action.payload) as Auction)._id]);
             }
 
-           
+
     }
 
 

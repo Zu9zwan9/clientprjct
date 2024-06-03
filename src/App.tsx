@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { useAppDispatch } from "hooks/app";
-import { getCategoryList } from "store/slice/category/actions/GetCategory";
-import { wsInit } from "store/slice/socket/SocketSlice";
-import { setActiveUser } from "store/slice/user/UserSlice";
+import React, {useEffect, useState} from "react";
+import {AdapterMoment} from '@mui/x-date-pickers/AdapterMoment';
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
+import {useAppDispatch} from "hooks/app";
+import {getCategoryList} from "store/slice/category/actions/GetCategory";
+import {wsInit} from "store/slice/socket/SocketSlice";
+import {setActiveUser} from "store/slice/user/UserSlice";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import {getCarBrandList} from "./store/slice/auction/actions/GetCarBrands";
@@ -35,8 +35,8 @@ const App: React.FC<{ children: React.ReactNode }> = (props) => {
 
     if (loading) {
         return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-                <CircularProgress />
+            <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>
+                <CircularProgress/>
             </Box>
         );
     }

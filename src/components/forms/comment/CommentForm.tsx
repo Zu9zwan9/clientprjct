@@ -1,18 +1,16 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import FormControl from '@mui/material/FormControl';
-import { Controller, useForm } from "react-hook-form";
+import {Controller, useForm} from "react-hook-form";
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-import { useAppDispatch, useAppSelector } from "hooks/app";
+import {useAppDispatch, useAppSelector} from "hooks/app";
 import Alert from '@mui/material/Alert';
 import CheckIcon from '@mui/icons-material/Check';
-import { unwrapResult } from '@reduxjs/toolkit';
-import { Comment } from "models/Comment";
+import {unwrapResult} from '@reduxjs/toolkit';
+import {Comment} from "models/Comment";
 import TextField from "@mui/material/TextField";
-import { useDashboardContext } from "components/template/dasbboard/DashboardContext";
-import { createComment } from "store/slice/comment/actions/createComment";
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
+import {useDashboardContext} from "components/template/dasbboard/DashboardContext";
+import {createComment} from "store/slice/comment/actions/createComment";
 
 export interface CommentFormProps {
     auctionId: string;
@@ -20,14 +18,14 @@ export interface CommentFormProps {
 }
 
 const CommentForm: React.FC<CommentFormProps> = (props) => {
-    const { control, handleSubmit, reset, formState: { errors } } = useForm<Comment>();
-    const { setNotification } = useDashboardContext();
+    const {control, handleSubmit, reset, formState: {errors}} = useForm<Comment>();
+    const {setNotification} = useDashboardContext();
     const [errorMsg, setErrorMsg] = useState<string>();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submittedComments, setSubmittedComments] = useState<Comment[]>([]);
 
     const dispatch = useAppDispatch();
-    const { activeUser } = useAppSelector(state => state.user);
+    const {activeUser} = useAppSelector(state => state.user);
 
     const onSubmit = async (data: Comment) => {
         if (isSubmitting) return;
@@ -45,7 +43,7 @@ const CommentForm: React.FC<CommentFormProps> = (props) => {
                 props.onCreate(comment);
             }
             setSubmittedComments(prev => [comment, ...prev]);
-            reset({ comment: '' });
+            reset({comment: ''});
         } catch (error) {
             if (error instanceof Error) {
                 setErrorMsg(error.message || "An error occurred");
@@ -63,8 +61,8 @@ const CommentForm: React.FC<CommentFormProps> = (props) => {
                         <Controller
                             name="comment"
                             control={control}
-                            rules={{ required: 'Напишіть коментар' }}
-                            render={({ field }) => (
+                            rules={{required: 'Напишіть коментар'}}
+                            render={({field}) => (
                                 <TextField
                                     {...field}
                                     multiline
@@ -81,12 +79,12 @@ const CommentForm: React.FC<CommentFormProps> = (props) => {
 
                     {errorMsg && (
                         <FormControl fullWidth>
-                            <Alert icon={<CheckIcon fontSize="inherit" />} severity="error">
+                            <Alert icon={<CheckIcon fontSize="inherit"/>} severity="error">
                                 {errorMsg}
                             </Alert>
                         </FormControl>
                     )}
-                    <FormControl style={{ maxWidth: 200 }} variant="standard">
+                    <FormControl style={{maxWidth: 200}} variant="standard">
                         <Button type="submit" variant="outlined" disabled={isSubmitting}>Надіслати</Button>
                     </FormControl>
                 </Stack>

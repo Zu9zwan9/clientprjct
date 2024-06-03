@@ -1,9 +1,9 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { WritableDraft } from "immer";
-import { CommentState } from "types/state/CommentState";
-import { GetAuctionComment } from "./actions/GetAuctionComment";
-import { createComment } from "./actions/createComment";
-import { Comment } from "models/Comment";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {WritableDraft} from "immer";
+import {CommentState} from "types/state/CommentState";
+import {GetAuctionComment} from "./actions/GetAuctionComment";
+import {createComment} from "./actions/createComment";
+import {Comment} from "models/Comment";
 
 const initialState = {
     commentList: []
@@ -40,6 +40,6 @@ const commentSlice = createSlice({
     }
 });
 
-export const { setCommentList, receiveComment } = commentSlice.actions;
+export const {setCommentList, receiveComment} = commentSlice.actions;
 
 export default commentSlice.reducer;

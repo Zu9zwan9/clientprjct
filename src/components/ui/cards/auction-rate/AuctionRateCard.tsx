@@ -6,36 +6,42 @@ import moment from "moment";
 export interface AuctionRateCardProps {
     rate: AuctionRate;
 }
+
 const AuctionRateCard: React.FC<AuctionRateCardProps> = (props) => {
-    const { rate } = props;
-
-    // Safely access `user` properties with optional chaining and provide a fallback value.
-    const userName = rate.user?.name || 'Unknown User';
-
     return (
         <Paper elevation={3} sx={{ padding: 2, marginBottom: 2 }}>
             <Grid container spacing={2} alignItems="center">
                 {/* Headers */}
                 <Grid item xs={12} sm={4}>
-                    <Typography variant="subtitle1" component="div">Дата</Typography>
+                    <Typography variant="subtitle1" component="div">
+                        Дата
+                    </Typography>
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                    <Typography variant="subtitle1" component="div">Ставка</Typography>
+                    <Typography variant="subtitle1" component="div">
+                        Ставка
+                    </Typography>
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                    <Typography variant="subtitle1" component="div">Користувач</Typography>
+                    <Typography variant="subtitle1" component="div">
+                        Користувач
+                    </Typography>
                 </Grid>
                 {/* Data */}
                 <Grid item xs={12} sm={4}>
                     <Typography variant="body2" component="div">
-                        {moment.unix(rate.time).format("MMMM Do YYYY, h:mm:ss a")}
+                        {moment.unix(props.rate.time).format("MMMM Do YYYY, h:mm:ss a")}
                     </Typography>
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                    <Typography variant="body2" component="div">{rate.value} $</Typography>
+                    <Typography variant="body2" component="div">
+                        {props.rate.value} $
+                    </Typography>
                 </Grid>
                 <Grid item xs={12} sm={4}>
-                    <Typography variant="body2" component="div">{userName}</Typography>
+                    <Typography variant="body2" component="div">
+                        {typeof props.rate.user == 'object' ? props.rate.user.name : props.rate.userName}
+                    </Typography>
                 </Grid>
             </Grid>
         </Paper>
@@ -43,4 +49,3 @@ const AuctionRateCard: React.FC<AuctionRateCardProps> = (props) => {
 }
 
 export default AuctionRateCard;
-

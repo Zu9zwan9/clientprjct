@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, {Fragment} from "react";
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import CategoryCardView from "./elements/CategoryCardView";
@@ -22,9 +22,9 @@ const DashboardIndexPage: React.FC<{}> = () => {
                             useFlexGap
                             flexWrap="wrap"
                         >
-                            <CategoryCardView />
-                            <AuctionLotCardView />
-                            <UserCardView />
+                            <CategoryCardView/>
+                            <AuctionLotCardView/>
+                            <UserCardView/>
                         </Stack>
                     </Hidden>
                     <Hidden smUp>
@@ -35,7 +35,7 @@ const DashboardIndexPage: React.FC<{}> = () => {
                                         <Typography variant="h5" component="div">
                                             Категорії
                                         </Typography>
-                                        <CategoryCardView />
+                                        <CategoryCardView/>
                                     </CardContent>
                                 </Card>
                             </Grid>
@@ -45,7 +45,7 @@ const DashboardIndexPage: React.FC<{}> = () => {
                                         <Typography variant="h5" component="div">
                                             Аукціони
                                         </Typography>
-                                        <AuctionLotCardView />
+                                        <AuctionLotCardView/>
                                     </CardContent>
                                 </Card>
                             </Grid>
@@ -55,7 +55,7 @@ const DashboardIndexPage: React.FC<{}> = () => {
                                         <Typography variant="h5" component="div">
                                             Користувачі
                                         </Typography>
-                                        <UserCardView />
+                                        <UserCardView/>
                                     </CardContent>
                                 </Card>
                             </Grid>

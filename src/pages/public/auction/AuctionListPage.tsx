@@ -1,45 +1,45 @@
 import {
+    Box,
     Button,
+    Card,
+    CardActions,
+    CardContent,
+    Chip,
     FormControl,
     Grid,
-    InputLabel,
-    Stack,
     Hidden,
-    Box,
-    Card,
-    CardContent,
-    Typography,
-    CardActions,
-    Select,
+    InputLabel,
     MenuItem,
-    TextField,
+    Select,
     SelectChangeEvent,
-    Chip
+    Stack,
+    TextField,
+    Typography
 } from "@mui/material";
-import { Auction } from "models/Auction";
-import React, { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { ServiceFactory } from "services/ServiceFactory";
-import { AuctionFilterBuilder } from "utils/filter/AuctionFilterBuilder";
+import {Auction} from "models/Auction";
+import React, {useEffect, useState} from "react";
+import {useNavigate, useSearchParams} from "react-router-dom";
+import {ServiceFactory} from "services/ServiceFactory";
+import {AuctionFilterBuilder} from "utils/filter/AuctionFilterBuilder";
 import AuctionPublicTable from "components/ui/table/auction/AuctionPublicTable";
-import { useAppSelector } from "hooks/app";
-import { CarModel } from "models/CarModel";
+import {useAppSelector} from "hooks/app";
+import {CarModel} from "models/CarModel";
 import EditIcon from "@mui/icons-material/Edit";
 import moment from "moment";
-import { AuctionStatusEnum } from "../../../types/enums/AuctionStatusEnum";
-import { Location } from "models/Location";
-import { AuctionRate } from "models/AuctionRate";
+import {AuctionStatusEnum} from "../../../types/enums/AuctionStatusEnum";
+import {Location} from "models/Location";
+import {AuctionRate} from "models/AuctionRate";
 import {Country} from "../../../models/Country";
 
 const AuctionListPage: React.FC<{}> = () => {
     const sortList = [
-        { value: "new", label: "Найновіші" },
-        { value: "popular", label: "Популярні" },
-        { value: "commercial", label: "Комерційні" },
+        {value: "new", label: "Найновіші"},
+        {value: "popular", label: "Популярні"},
+        {value: "commercial", label: "Комерційні"},
     ];
 
-    const { carTypeList, brandList, countryList } = useAppSelector(state => state.auction);
-    const { categoryList } = useAppSelector(state => state.category);
+    const {carTypeList, brandList, countryList} = useAppSelector(state => state.auction);
+    const {categoryList} = useAppSelector(state => state.category);
 
     const [auctionList, setAuctionList] = useState<Auction[]>([]);
     const [carModelList, setCarModelList] = useState<CarModel[]>([]);
@@ -66,9 +66,9 @@ const AuctionListPage: React.FC<{}> = () => {
                             .getAuctionRateById(auction._id)
                             .then(rates => {
                                 if (rates.length > 0) {
-                                    setLatestBids(prev => ({ ...prev, [auction._id]: rates[0] }));
+                                    setLatestBids(prev => ({...prev, [auction._id]: rates[0]}));
                                 } else {
-                                    setLatestBids(prev => ({ ...prev, [auction._id]: null }));
+                                    setLatestBids(prev => ({...prev, [auction._id]: null}));
                                 }
                             });
                     });
@@ -292,7 +292,8 @@ const AuctionListPage: React.FC<{}> = () => {
                                         Тип Авто: {carTypeList.find(item => item.id === row.type)?.name}
                                     </Typography>
                                     <Typography variant="body2" color="textSecondary">
-                                        Остання ставка: {latestBids[row._id] ? `${latestBids[row._id]?.value} $` : "Ставки відсутні"}
+                                        Остання
+                                        ставка: {latestBids[row._id] ? `${latestBids[row._id]?.value} $` : "Ставки відсутні"}
                                     </Typography>
                                     <Chip
                                         label={row.status === AuctionStatusEnum.ACTIVE ? "Активний" : "Завершений"}

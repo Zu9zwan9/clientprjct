@@ -8,5 +8,5 @@ export interface User extends Entity {
     confirmPassword: string;
     thumbnail: string;
     thumbnail_file: File;
-    
+
 }

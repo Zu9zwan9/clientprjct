@@ -20,7 +20,7 @@ import {setActiveUser} from "../../../store/slice/user/UserSlice";
 
 const SignInForm: React.FC<{}> = () => {
     const [showPass, setShowPass] = useState(false);
-    const { register, handleSubmit, formState: { errors } } = useForm<User>();
+    const {register, handleSubmit, formState: {errors}} = useForm<User>();
     const [errorMsg, setErrorMsg] = useState<string>();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -101,16 +101,17 @@ const SignInForm: React.FC<{}> = () => {
                             </InputAdornment>
                         }
                     />
-                    {errors.password && <FormHelperText id="password-error-text">{errors.password.message}</FormHelperText>}
+                    {errors.password &&
+                        <FormHelperText id="password-error-text">{errors.password.message}</FormHelperText>}
                 </FormControl>
                 {errorMsg && (
                     <FormControl fullWidth>
-                        <Alert icon={<CheckIcon fontSize="inherit" />} severity="error">
+                        <Alert icon={<CheckIcon fontSize="inherit"/>} severity="error">
                             {errorMsg}
                         </Alert>
                     </FormControl>
                 )}
-                <FormControl style={{ maxWidth: 200 }} variant="standard">
+                <FormControl style={{maxWidth: 200}} variant="standard">
                     <Button type="submit" variant="outlined">Увійти</Button>
                 </FormControl>
                 {/*<Button onClick={handleGoogleSignIn} variant="contained" color="primary">*/}

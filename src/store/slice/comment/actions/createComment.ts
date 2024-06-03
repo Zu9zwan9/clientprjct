@@ -1,7 +1,7 @@
 import axios from "axios";
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {actionRequestConfig, BASE_URL} from "store/config";
-import { Comment } from "models/Comment";
+import {Comment} from "models/Comment";
 
 
 export const createComment = createAsyncThunk(

@@ -8,7 +8,7 @@ import {Auction} from "models/Auction";
 import {ServiceFactory} from "services/ServiceFactory";
 import SectionCaption from "components/ui/caption/SectionCaption";
 import AuctionForm from "components/forms/auction/AuctionForm";
-import {Typography, Paper} from "@mui/material";
+import {Paper, Typography} from "@mui/material";
 import {AuctionRate} from "models/AuctionRate";
 import AuctionRateCard from "components/ui/cards/auction-rate/AuctionRateCard";
 
@@ -50,7 +50,7 @@ const DashboardAuctionEditPage: React.FC<{}> = () => {
             <SectionCaption caption="Редагувати аукціон"/>
             <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
-                    <Paper elevation={3} sx={{ padding: 2 }}>
+                    <Paper elevation={3} sx={{padding: 2}}>
                         <AuctionForm object={auction}/>
                     </Paper>
                 </Grid>

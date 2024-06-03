@@ -1,4 +1,4 @@
-import { Entity } from "./Entity";
+import {Entity} from "./Entity";
 
 export interface Comment extends Entity {
     userId?: string;
@@ -7,5 +7,5 @@ export interface Comment extends Entity {
     userName?: string;
     date?: number;
     time?: number;
-    timeAgo:string;
+    timeAgo: string;
 }
