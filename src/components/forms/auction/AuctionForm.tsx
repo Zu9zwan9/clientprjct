@@ -93,6 +93,11 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
             setIsSubmitting(false);
             return;
         }
+        if (moment().unix() > data.dateClose) {
+            setNotification("Неможливо змінювати ціну після закінчення аукціону");
+            setIsSubmitting(false);
+            return;
+        }
         data.brandId = data.brandId ? data.brandId : "";
         data.modelId = data.modelId ? data.modelId : "";
         data.countryId = data.countryId ? data.countryId : "";

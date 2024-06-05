@@ -18,7 +18,7 @@ const AuctionLotCardView: React.FC<{}> = () => {
                     title="lots list"
                 />
                 <Typography gutterBottom variant="h5" component="div">
-                    Лоти лотів
+                    Список лотів
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                     Цей розділ дозволяє адміністратору керувати лотами.
