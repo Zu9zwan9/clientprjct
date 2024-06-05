@@ -6,11 +6,6 @@ const initialState = {
     state: SocketStatusEnum.DISCONNECTED
 } as WebSocketState;
 
-/*
-type RoomAction = PayloadAction<{
-    emit: boolean;
-}>;
-*/
 
 const webSocketSlice = createSlice({
     name: "webSocketSlice",

@@ -13,7 +13,6 @@ export const getUserList = createAsyncThunk(
             )
             return data;
         } catch (error: any) {
-            //console.log("Response",error.response.data.message , error.response);
             if (error.response && error.response.data.message) {
                 return rejectWithValue(error.response.data.message)
             } else {
