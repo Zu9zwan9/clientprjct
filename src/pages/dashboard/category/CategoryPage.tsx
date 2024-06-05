@@ -37,7 +37,7 @@ const DashboardCategoryPage: React.FC<{}> = () => {
 
     return (
         <Fragment>
-            <SectionCaption caption="Категорії аукціонів"/>
+            <SectionCaption caption="Категорії лотів"/>
             <Grid container spacing={2}>
 
                 <Grid item xs={12}>

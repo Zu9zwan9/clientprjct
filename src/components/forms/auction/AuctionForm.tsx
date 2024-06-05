@@ -89,7 +89,7 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
     function onSubmit(data: Auction) {
         setIsSubmitting(true);
         if (!data.dateClose || data.dateClose < moment().unix()) {
-            setNotification("Неможливо створити аукціон минулою датою або без дати закриття");
+            setNotification("Неможливо створити лот минулою датою або без дати закриття");
             setIsSubmitting(false);
             return;
         }
@@ -230,7 +230,7 @@ const AuctionForm: React.FC<FormObjectProps<Auction>> = (props) => {
                 </FormControl>
                 <FormControl fullWidth variant="filled">
                     <DemoContainer components={['DateTimePicker']}>
-                        <DemoItem label={"Дата закриття аукціону"}>
+                        <DemoItem label={"Дата закриття лоту"}>
                             <DateTimePicker
                                 value={valueDatePicker || null}
                                 defaultValue={props.object?.dateClose ? moment.unix(props.object.dateClose) : null}

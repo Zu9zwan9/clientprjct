@@ -125,7 +125,7 @@ const AuctionPage: React.FC<{}> = () => {
     const handleOnCommentCreate = (value: Comment) => {
     }
 
-    if (!activeAuction) return <>Аукціон не знайдено</>
+    if (!activeAuction) return <>Лот не знайдено</>
 
     return (
         <>
@@ -199,10 +199,9 @@ const AuctionPage: React.FC<{}> = () => {
                                                     Відправити
                                                 </Button>
                                             </Stack>
-                                            : <Alert sx={{marginTop: 4}} component={"div"} severity="warning">Аукціон
+                                            : <Alert sx={{marginTop: 4}} component={"div"} severity="warning">Лот
                                                 завершений</Alert>
                                         }
-
                                         <Stack sx={{marginTop: 4}} direction="row" spacing={2}>
                                             <Button
                                                 onClick={handleFollowClick}
@@ -223,8 +222,6 @@ const AuctionPage: React.FC<{}> = () => {
                                                 Відписатися від змін ціни
                                             </Button>
                                         </Stack>
-
-
                                     </Box>
                                 </Stack>
                             </CardContent>

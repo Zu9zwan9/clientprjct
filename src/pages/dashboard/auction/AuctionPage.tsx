@@ -53,7 +53,7 @@ const DashboardAuctionPage: React.FC<{}> = () => {
     return (
         <Fragment>
             <Grid container spacing={2}>
-                <SectionCaption caption="Список аукціонів"/>
+                <SectionCaption caption="Список лотів"/>
                 <Grid item xs={12}>
                     <Hidden smDown>
                         <Stack spacing={4} alignItems="center" direction="row" useFlexGap flexWrap="wrap">

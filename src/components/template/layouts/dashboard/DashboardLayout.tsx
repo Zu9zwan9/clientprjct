@@ -34,7 +34,7 @@ const DashboardLayout: React.FC<{}> = () => {
 
     const actions = [
         {icon: <CategoryIcon/>, onclick: handleCreateCategory, name: 'Створити категорію'},
-        {icon: <CarIcon/>, onclick: handleCreateAuctionLot, name: 'Створити аукціон'},
+        {icon: <CarIcon/>, onclick: handleCreateAuctionLot, name: 'Створити лот'},
 
     ];
 

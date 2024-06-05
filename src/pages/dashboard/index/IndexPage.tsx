@@ -43,7 +43,7 @@ const DashboardIndexPage: React.FC<{}> = () => {
                                 <Card>
                                     <CardContent>
                                         <Typography variant="h5" component="div">
-                                            Аукціони
+                                            Лоти
                                         </Typography>
                                         <AuctionLotCardView/>
                                     </CardContent>

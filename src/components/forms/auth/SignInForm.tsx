@@ -30,7 +30,7 @@ const SignInForm: React.FC<{}> = () => {
     };
 
     const handleMouseDownPass = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault(); // This function now matches the purpose, preventing focus loss
+        event.preventDefault();
     };
 
     const onSubmit = async (data: User) => {
@@ -45,18 +45,6 @@ const SignInForm: React.FC<{}> = () => {
         }
     };
 
-
-    // const handleGoogleSignIn = async () => {
-    //     try {
-    //         const result = await signInWithPopup(auth, googleProvider);
-    //         // You can handle or store the user info here
-    //         console.log(result.user); // Log or handle user information as needed
-    //         navigate("/profile");
-    //     } catch (error) {
-    //         console.error(error);
-    //         setErrorMsg("Failed to authenticate with Google");
-    //     }
-    // };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
@@ -114,9 +102,6 @@ const SignInForm: React.FC<{}> = () => {
                 <FormControl style={{maxWidth: 200}} variant="standard">
                     <Button type="submit" variant="outlined">Увійти</Button>
                 </FormControl>
-                {/*<Button onClick={handleGoogleSignIn} variant="contained" color="primary">*/}
-                {/*    Sign in with Google*/}
-                {/*</Button>*/}
             </Stack>
         </form>
     );

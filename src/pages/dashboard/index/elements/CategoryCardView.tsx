@@ -18,10 +18,10 @@ const CategoryCardView: React.FC<{}> = () => {
                     title="green iguana"
                 />
                 <Typography gutterBottom variant="h5" component="div">
-                    Категорії аукціонів
+                    Категорії лотів
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                    Цей розділ дозволяє адміністратору додавати та змінювати категорії аукціонів.
+                    Цей розділ дозволяє адміністратору додавати та змінювати категорії лотів.
                 </Typography>
             </CardContent>
             <CardActions>

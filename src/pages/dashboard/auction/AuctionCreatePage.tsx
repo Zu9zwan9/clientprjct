@@ -23,7 +23,7 @@ const DashboardAuctionCreatePage: React.FC<{}> = () => {
     return (
         <Fragment>
             <Grid container spacing={2}>
-                <SectionCaption caption="Створити аукціон"/>
+                <SectionCaption caption="Створити лот"/>
                 <Grid item xs={12}>
                     <AuctionForm/>
                 </Grid>

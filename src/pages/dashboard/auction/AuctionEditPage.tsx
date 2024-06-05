@@ -47,7 +47,7 @@ const DashboardAuctionEditPage: React.FC<{}> = () => {
 
     return (
         <Fragment>
-            <SectionCaption caption="Редагувати аукціон"/>
+            <SectionCaption caption="Редагувати лот"/>
             <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
                     <Paper elevation={3} sx={{padding: 2}}>

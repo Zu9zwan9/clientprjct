@@ -81,7 +81,7 @@ const UserForm: React.FC<FormObjectProps<User>> = (props) => {
                 <Controller
                     name="role"
                     control={control}
-                    defaultValue={props.object?.role || Role.CLIENT}  // Задаємо початкове значення ролі користувача, якого редагуємо
+                    defaultValue={props.object?.role || Role.CLIENT}
                     render={({field}) => (
                         <FormControl fullWidth error={!!errors.role} variant="outlined">
                             <InputLabel id="role-label">Роль</InputLabel>
@@ -99,36 +99,11 @@ const UserForm: React.FC<FormObjectProps<User>> = (props) => {
                     )}
                 />
 
-                {/*{activeUser?.role == Role.ROOT  */}
-                {/*    ?<FormControl>*/}
-                {/*    <Grid container>*/}
-                {/*        <Grid item xs={6}>*/}
-                {/*            <FormControl fullWidth variant="standard">*/}
-                {/*                <MuiFileInput*/}
-                {/*                    value={thumbnail}*/}
-                {/*                    label="Оберіть файл для обкладинки"*/}
-
-                {/*                    onChange={handleThumbnailChange}*/}
-                {/*                />*/}
-                {/*            </FormControl>*/}
-
-                {/*        </Grid>*/}
-                {/*        <Grid item xs={6}>*/}
-                {/*        </Grid>*/}
-                {/*    </Grid>*/}
-                {/*</FormControl>*/}
-
-                {/*    : ""*/}
-
-                {/*}*/}
-
-                {/* */}
-
-
                 <FormControl fullWidth error={errors.name ? true : false} variant="standard">
                     <Controller
                         name="name"
                         control={control}
+                        rules={{ required: "Обовʼязкове поле." }}
                         render={({field}) => (
                             <TextField
                                 {...field}
@@ -145,6 +120,7 @@ const UserForm: React.FC<FormObjectProps<User>> = (props) => {
                     <Controller
                         name="email"
                         control={control}
+                        rules={{ required: "Обовʼязкове поле." }}
                         render={({field}) => (
                             <TextField
                                 {...field}
