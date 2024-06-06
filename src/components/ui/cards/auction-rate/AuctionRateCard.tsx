@@ -12,35 +12,45 @@ const AuctionRateCard: React.FC<AuctionRateCardProps> = (props) => {
         <Paper elevation={3} sx={{ padding: 2, marginBottom: 2 }}>
             <Grid container spacing={2} alignItems="center">
                 {/* Headers */}
-                <Grid item xs={12} sm={4}>
+                <Grid item xs={12} sm={3}>
                     <Typography variant="subtitle1" component="div">
                         Дата
                     </Typography>
                 </Grid>
-                <Grid item xs={12} sm={4}>
+                <Grid item xs={12} sm={2}>
                     <Typography variant="subtitle1" component="div">
                         Ставка
                     </Typography>
                 </Grid>
-                <Grid item xs={12} sm={4}>
+                <Grid item xs={12} sm={3}>
                     <Typography variant="subtitle1" component="div">
                         Користувач
                     </Typography>
                 </Grid>
-                {/* Data */}
                 <Grid item xs={12} sm={4}>
+                    <Typography variant="subtitle1" component="div">
+                        ID лоту
+                    </Typography>
+                </Grid>
+                {/* Data */}
+                <Grid item xs={12} sm={3}>
                     <Typography variant="body2" component="div">
                         {moment.unix(props.rate.time).format("MMMM Do YYYY, h:mm:ss a")}
                     </Typography>
                 </Grid>
-                <Grid item xs={12} sm={4}>
+                <Grid item xs={12} sm={2}>
                     <Typography variant="body2" component="div">
                         {props.rate.value} $
                     </Typography>
                 </Grid>
-                <Grid item xs={12} sm={4}>
+                <Grid item xs={12} sm={3}>
                     <Typography variant="body2" component="div">
                         {typeof props.rate.user == 'object' ? props.rate.user.name : props.rate.userName}
+                    </Typography>
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                    <Typography variant="body2" component="div">
+                        {props.rate.auctionId}
                     </Typography>
                 </Grid>
             </Grid>
